@@ -1,0 +1,957 @@
+<div style="{{ themeStyle }}">
+<div style="display:flex;height:100vh;width:100vw;overflow:hidden;background:var(--bg,#f5f1ea);color:var(--ink,#3a352f);font-family:'Anuphan',sans-serif">
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside style="{{ asideStyle }}">
+  <div style="display:flex;align-items:center;gap:11px;padding:2px 4px 20px">
+    <div style="width:38px;height:38px;border-radius:11px;flex:none;background:linear-gradient(135deg,var(--accent,#889a76),var(--accent2,#5f7050));display:flex;align-items:center;justify-content:center;color:#fff;font-size:19px;box-shadow:0 4px 12px rgba(95,112,80,.28)">🎞️</div>
+    <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+    <div style="min-width:0">
+      <div style="font-weight:700;font-size:15px;letter-spacing:-.2px;white-space:nowrap">คลังหนังของฉัน</div>
+      <div style="font-size:11px;color:var(--muted,#9c9286);font-weight:500;white-space:nowrap">iTunes · Apple TV</div>
+    </div>
+    </sc-if>
+    <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+    <button onClick="{{ toggleCollapse }}" style="margin-left:auto;width:28px;height:28px;border-radius:8px;flex:none;color:var(--muted,#9c9286);font-size:15px;display:flex;align-items:center;justify-content:center" style-hover="background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050)">{{ collapseIcon }}</button>
+    </sc-if>
+  </div>
+  <sc-if value="{{ collapsed }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ toggleCollapse }}" style="width:100%;height:30px;border-radius:8px;color:var(--muted,#9c9286);font-size:15px;display:flex;align-items:center;justify-content:center;margin-bottom:8px" style-hover="background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050)">{{ collapseIcon }}</button>
+  </sc-if>
+
+  <nav style="display:flex;flex-direction:column;gap:3px">
+    <button onClick="{{ goPoster }}" style="{{ navPoster }}" style-hover="background:var(--soft,#e7ecdf)" title="โปสเตอร์">
+      <span style="font-size:17px;width:22px;text-align:center;flex:none">▦</span><sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>โปสเตอร์</span></sc-if></button>
+    <button onClick="{{ goTable }}" style="{{ navTable }}" style-hover="background:var(--soft,#e7ecdf)" title="ตาราง">
+      <span style="font-size:17px;width:22px;text-align:center;flex:none">▤</span><sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>ตาราง</span></sc-if></button>
+    <button onClick="{{ goDash }}" style="{{ navDash }}" style-hover="background:var(--soft,#e7ecdf)" title="สถิติ">
+      <span style="font-size:17px;width:22px;text-align:center;flex:none">◵</span><sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>สถิติ</span></sc-if></button>
+    <button onClick="{{ goPeople }}" style="{{ navPeople }}" style-hover="background:var(--soft,#e7ecdf)" title="บุคลากร">
+      <span style="font-size:17px;width:22px;text-align:center;flex:none">👥</span><sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>บุคลากร</span></sc-if></button>
+    <button onClick="{{ goAdd }}" style="{{ navAdd }}" style-hover="background:var(--soft,#e7ecdf)" title="เพิ่มหนัง">
+      <span style="font-size:17px;width:22px;text-align:center;flex:none">＋</span><sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span>เพิ่มหนัง</span></sc-if></button>
+  </nav>
+
+  <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+  <div style="margin-top:26px;padding:0 8px">
+    <div style="font-size:10.5px;font-weight:700;letter-spacing:1.5px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:10px">คอลเลกชัน</div>
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px"><span style="color:var(--muted,#9c9286)">หนังทั้งหมด</span><span style="font-weight:700">{{ stat_total }}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px"><span style="color:var(--muted,#9c9286)">พื้นที่รวม</span><span style="font-weight:700">{{ stat_gb }}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px"><span style="color:var(--muted,#9c9286)">ดูแล้ว</span><span style="font-weight:700">{{ stat_watched }}</span></div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="margin-top:auto;padding:14px 4px 2px;border-top:1px solid var(--line,#ece5d9)">
+    <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted,#9c9286)">
+      <span style="display:inline-flex;width:30px;height:21px;flex:none;border-radius:4px;background:#0d253f;color:#01b4e4;font-weight:800;font-size:8px;align-items:center;justify-content:center;letter-spacing:.3px">TMDB</span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}"><span style="white-space:nowrap">Powered by TMDB · OMDb</span></sc-if>
+    </div>
+    <sc-if value="{{ expanded }}">
+      <div style="margin-top:8px;font-size:10.5px;line-height:1.75;color:var(--muted,#9c9286)">
+        <div style="white-space:nowrap">Developed by สิรวิชญ์ เผ่าผา</div>
+        <div style="white-space:nowrap">version {{ appVersion }}</div>
+        <div style="white-space:nowrap">build · {{ buildDate }}</div>
+      </div>
+    </sc-if>
+  </div>
+</aside>
+
+<!-- ===================== MAIN ===================== -->
+<div style="flex:1;display:flex;flex-direction:column;min-width:0">
+
+  <!-- TOPBAR -->
+  <header style="height:68px;flex:none;border-bottom:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);display:flex;align-items:center;gap:16px;padding:0 26px">
+    <div style="min-width:150px;white-space:nowrap">
+      <div style="font-size:18px;font-weight:700;letter-spacing:-.3px">{{ viewTitle }}</div>
+      <div style="font-size:12px;color:var(--muted,#9c9286);font-weight:500">{{ viewSub }}</div>
+    </div>
+    <sc-if value="{{ showToolbar }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;display:flex;align-items:center;gap:12px;justify-content:flex-end">
+      <div style="position:relative;width:280px">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted,#9c9286);font-size:14px">⌕</span>
+        <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="ค้นหาชื่อหนัง…" style="width:100%;height:38px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px 0 34px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76);background:var(--surface,#fffdf9)">
+      </div>
+      <div style="display:flex;background:var(--bg,#f5f1ea);border:1px solid var(--line,#ece5d9);border-radius:10px;padding:3px;gap:2px">
+        <button onClick="{{ filterAll }}" style="{{ fAll }}">ทั้งหมด</button>
+        <button onClick="{{ filterWatched }}" style="{{ fWatched }}">ดูแล้ว</button>
+        <button onClick="{{ filterUnwatched }}" style="{{ fUnwatched }}">ยังไม่ดู</button>
+      </div>
+      <select value="{{ genreFilter }}" onChange="{{ onGenre }}" style="height:38px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 10px;font-size:13px;color:var(--ink,#3a352f);max-width:140px">
+        <sc-for list="{{ genreOptions }}" as="g" hint-placeholder-count="4"><option value="{{ g }}">{{ g }}</option></sc-for>
+      </select>
+      <button onClick="{{ goAdd }}" style="height:38px;padding:0 16px;border-radius:10px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:13.5px;display:flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(95,112,80,.25)" style-hover="filter:brightness(1.07)"><span style="font-size:15px">＋</span>เพิ่มหนัง</button>
+    </div>
+    </sc-if>
+  </header>
+
+  <!-- CONTENT -->
+  <div style="flex:1;overflow:auto;position:relative">
+
+    <sc-if value="{{ showPeopleBanner }}" hint-placeholder-val="{{ false }}">
+      <div style="margin:14px 28px 0;display:flex;align-items:center;gap:12px;background:var(--soft,#e7ecdf);border:1px solid var(--accent,#889a76);border-radius:11px;padding:9px 14px">
+        <span style="font-size:12.5px;font-weight:700;color:var(--accent2,#5f7050)">👥 {{ peopleBanner }}</span>
+        <button onClick="{{ clearPeople }}" style="height:26px;padding:0 11px;border-radius:7px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:11.5px;margin-left:auto">ล้างตัวกรอง</button>
+      </div>
+    </sc-if>
+
+    <!-- ============ POSTER GRID ============ -->
+    <sc-if value="{{ isPoster }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:22px 28px 60px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <span style="font-size:12.5px;font-weight:600;color:var(--muted,#9c9286)">ขนาดการ์ด</span>
+        <div style="display:flex;background:var(--bg,#f5f1ea);border:1px solid var(--line,#ece5d9);border-radius:9px;padding:3px;gap:2px">
+          <sc-for list="{{ psizeBtns }}" as="b" hint-placeholder-count="5"><button onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</button></sc-for>
+        </div>
+        <span style="font-size:12px;color:var(--muted,#9c9286);margin-left:auto">{{ rowCount }} เรื่อง</span>
+      </div>
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:80px 0;color:var(--muted,#9c9286)">ไม่พบหนังที่ตรงกับเงื่อนไข</div>
+      </sc-if>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cardmin,178px),1fr));gap:22px">
+        <sc-for list="{{ cards }}" as="m" hint-placeholder-count="10">
+          <div onClick="{{ m.open }}" style="cursor:pointer;animation:pop .35s ease both;animation-delay:{{ m.delay }}">
+            <div style="position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;background:{{ m.grad }};box-shadow:0 10px 26px -8px rgba(60,53,47,.32),0 2px 6px rgba(60,53,47,.1);transition:transform .25s,box-shadow .25s" style-hover="transform:translateY(-5px);box-shadow:0 18px 38px -10px rgba(60,53,47,.42)">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+                <span style="font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.92);font-size:46px;font-weight:500;text-shadow:0 2px 12px rgba(0,0,0,.3)">{{ m.initial }}</span>
+              </div>
+              <sc-if value="{{ m.hasImg }}" hint-placeholder-val="{{ true }}">
+                <img src="{{ m.img }}" onError="{{ m.imgErr }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+              </sc-if>
+              <div style="position:absolute;inset:0;background:radial-gradient(circle at 70% 18%,rgba(255,255,255,.22),transparent 55%)"></div>
+              <div style="position:absolute;top:11px;right:11px;display:flex;flex-direction:column;gap:5px;align-items:flex-end">
+                <span style="background:rgba(15,12,10,.62);backdrop-filter:blur(6px);color:#ffd66b;font-weight:700;font-size:12px;padding:4px 8px;border-radius:8px;display:flex;align-items:center;gap:3px">★ {{ m.imdb }}</span>
+                <span style="background:{{ m.rtColor }};color:#fff;font-weight:700;font-size:11px;padding:3px 7px;border-radius:8px">🍅 {{ m.rt }}</span>
+              </div>
+              <sc-if value="{{ m.watched }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute;top:11px;left:11px;background:rgba(255,255,255,.92);color:var(--accent2,#5f7050);font-weight:700;font-size:10px;padding:3px 7px;border-radius:7px">✓ ดูแล้ว</span>
+              </sc-if>
+              <sc-if value="{{ classic }}" hint-placeholder-val="{{ true }}">
+              <div style="position:absolute;left:0;right:0;bottom:0;padding:30px 14px 14px;background:linear-gradient(to top,rgba(20,16,12,.82),rgba(20,16,12,.32) 60%,transparent)">
+                <div style="color:#fff;font-weight:700;font-size:15.5px;line-height:1.2;letter-spacing:-.2px;text-shadow:0 1px 4px rgba(0,0,0,.4)">{{ m.t }}</div>
+                <div style="color:rgba(255,255,255,.78);font-size:11.5px;margin-top:2px">{{ m.th }} · {{ m.y }}</div>
+              </div>
+              </sc-if>
+            </div>
+            <sc-if value="{{ editorial }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:10px;padding:0 2px">
+                <div style="font-weight:700;font-size:14.5px;letter-spacing:-.2px;line-height:1.25">{{ m.t }}</div>
+                <div style="font-size:11.5px;color:var(--muted,#9c9286);margin-top:1px">{{ m.th }} · {{ m.y }}</div>
+              </div>
+            </sc-if>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:9px;padding:0 2px">
+              <div style="display:flex;gap:1px">
+                <sc-for list="{{ m.stars }}" as="s" hint-placeholder-count="5"><span style="color:{{ s.c }};font-size:13px">★</span></sc-for>
+              </div>
+              <span style="font-size:11px;color:var(--muted,#9c9286);font-weight:600">{{ m.genre }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ============ TABLE ============ -->
+    <sc-if value="{{ isTable }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:18px 0 0">
+      <div style="padding:0 26px 14px;display:flex;align-items:center;gap:10px">
+        <button onClick="{{ openAddCol }}" style="height:32px;padding:0 13px;border-radius:9px;border:1px dashed var(--accent,#889a76);color:var(--accent2,#5f7050);font-weight:600;font-size:12.5px;display:flex;align-items:center;gap:5px;white-space:nowrap;background:var(--soft,#e7ecdf)" style-hover="background:var(--accent,#889a76);color:#fff;border-color:transparent">＋ เพิ่มคอลัมน์</button>
+        <label style="height:32px;padding:0 13px;border-radius:9px;border:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f);font-weight:500;font-size:12.5px;white-space:nowrap;background:var(--surface,#fffdf9);display:flex;align-items:center;cursor:pointer" style-hover="border-color:var(--accent,#889a76)">⤓ นำเข้า CSV<input type="file" accept=".csv,text/csv" onChange="{{ importCsvFile }}" style="display:none" /></label>
+        <button onClick="{{ exportCsv }}" style="height:32px;padding:0 13px;border-radius:9px;border:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f);font-weight:500;font-size:12.5px;white-space:nowrap;background:var(--surface,#fffdf9)" style-hover="border-color:var(--accent,#889a76)">⤴ ส่งออก CSV</button>
+        <button onClick="{{ openCols }}" style="height:32px;padding:0 13px;border-radius:9px;border:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f);font-weight:500;font-size:12.5px;white-space:nowrap;background:var(--surface,#fffdf9)" style-hover="border-color:var(--accent,#889a76)">⌗ คอลัมน์</button>
+        <button onClick="{{ groupBtn }}" style="{{ groupBtnStyle }}" style-hover="border-color:var(--accent,#889a76)">{{ groupLabel }}</button>
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:9px;padding:3px 6px;height:32px" title="ปรับความสูงแถว · กะทัดรัด = ไม่โชว์รูป">
+          <span style="font-size:13px">⊟</span>
+          <button onClick="{{ zoomOut }}" style="width:22px;height:24px;border-radius:6px;font-size:16px;font-weight:700;color:var(--accent2,#5f7050);display:flex;align-items:center;justify-content:center" style-hover="background:var(--soft,#e7ecdf)" title="แถวเล็กลง">−</button>
+          <span style="font-size:11px;font-weight:600;color:var(--muted,#9c9286);min-width:50px;text-align:center">{{ zoomLabel }}</span>
+          <button onClick="{{ zoomIn }}" style="width:22px;height:24px;border-radius:6px;font-size:16px;font-weight:700;color:var(--accent2,#5f7050);display:flex;align-items:center;justify-content:center" style-hover="background:var(--soft,#e7ecdf)" title="แถวใหญ่ขึ้น">+</button>
+        </div>
+        <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto;background:var(--accent2,#5f7050);border-radius:10px;padding:4px 6px 4px 12px">
+            <span style="font-size:12px;font-weight:700;color:#fff">เลือก {{ selCount }} เรื่อง</span>
+            <button onClick="{{ bulkWatched }}" style="height:26px;padding:0 10px;border-radius:7px;background:rgba(255,255,255,.95);color:var(--accent2,#5f7050);font-weight:600;font-size:11.5px">✓ ดูแล้ว</button>
+            <button onClick="{{ bulkUnwatched }}" style="height:26px;padding:0 10px;border-radius:7px;background:rgba(255,255,255,.95);color:var(--accent2,#5f7050);font-weight:600;font-size:11.5px">ยังไม่ดู</button>
+            <button onClick="{{ bulkDelete }}" style="height:26px;padding:0 10px;border-radius:7px;background:#c9685c;color:#fff;font-weight:600;font-size:11.5px">🗑 ลบ</button>
+            <button onClick="{{ clearSel }}" style="height:26px;width:26px;border-radius:7px;background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:13px">✕</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ true }}"></sc-if>
+        <span style="font-size:11.5px;color:var(--muted,#9c9286);margin-left:auto">คลิกช่องเพื่อแก้ไข · คลิกหัวคอลัมน์เพื่อเรียง · {{ rowCount }} แถว</span>
+      </div>
+      <div style="overflow:auto;max-height:calc(100vh - 68px - 64px)">
+        <table style="border-collapse:separate;border-spacing:0;font-size:var(--tfs,13px);white-space:nowrap">
+          <thead>
+            <!-- group header row -->
+            <tr>
+              <th style="position:sticky;left:0;top:0;z-index:6;background:var(--surf2,#f1ebe1);min-width:300px;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)"></th>
+              <th colspan="5" style="position:sticky;top:0;z-index:4;background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050);font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🎬 ข้อมูลหนัง</th>
+              <sc-if value="{{ showCrew }}" hint-placeholder-val="{{ true }}"><th colspan="{{ crewColspan }}" onClick="{{ toggleCrew }}" title="กดเพื่อย่อ/ขยายกลุ่มทีมงาน" style="position:sticky;top:0;z-index:4;background:#ece6f2;color:#6d5d86;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9);cursor:pointer;user-select:none" style-hover="filter:brightness(.96)">🎭 ทีมงานสร้าง {{ crewChevron }}</th></sc-if>
+              <th colspan="6" style="position:sticky;top:0;z-index:4;background:#f3e6d6;color:#9a6b3f;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">⭐ คะแนน &amp; จำนวนโหวต</th>
+              <sc-if value="{{ showBox }}" hint-placeholder-val="{{ true }}"><th colspan="5" style="position:sticky;top:0;z-index:4;background:#e8ecdd;color:#5f7050;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">💰 Box Office</th></sc-if>
+              <th colspan="2" style="position:sticky;top:0;z-index:4;background:#efe4ea;color:#8a5d76;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">📺 สถานะของฉัน</th>
+              <th colspan="2" style="position:sticky;top:0;z-index:4;background:#e5e9ee;color:#566378;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">💾 ไฟล์ที่ซื้อ</th>
+              <sc-if value="{{ showOscar }}" hint-placeholder-val="{{ true }}"><th colspan="3" style="position:sticky;top:0;z-index:4;background:#f6ecd6;color:#9a7b2f;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🏆 ออสการ์</th></sc-if>
+              <sc-if value="{{ showQuality }}" hint-placeholder-val="{{ true }}"><th colspan="4" style="position:sticky;top:0;z-index:4;background:#e2eeeb;color:#2f7d6e;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🎞️ คุณภาพภาพ</th></sc-if>
+              <sc-if value="{{ showAudio }}" hint-placeholder-val="{{ true }}"><th colspan="4" style="position:sticky;top:0;z-index:4;background:#e9e6f2;color:#6d5d86;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🔊 เสียง &amp; ซับ</th></sc-if>
+              <sc-if value="{{ showItunes }}" hint-placeholder-val="{{ true }}"><th colspan="2" style="position:sticky;top:0;z-index:4;background:#ede6dd;color:#7a6248;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🎁 iTunes Extra</th></sc-if>
+              <sc-if value="{{ showPurchase }}" hint-placeholder-val="{{ true }}"><th colspan="3" style="position:sticky;top:0;z-index:4;background:#f3e6e6;color:#8a5d5d;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🛒 การซื้อ</th></sc-if>
+              <sc-if value="{{ hasCustom }}" hint-placeholder-val="{{ false }}">
+              <th colspan="{{ customColsCount }}" style="position:sticky;top:0;z-index:4;background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050);font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9)">✎ กำหนดเอง</th>
+              </sc-if>
+            </tr>
+            <!-- column header row -->
+            <tr>
+              <th onClick="{{ sorters.t }}" style="position:sticky;left:0;top:37px;z-index:6;background:var(--surf2,#f1ebe1);text-align:left;padding:9px 12px;font-weight:600;color:var(--muted,#9c9286);border-bottom:2px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9);min-width:300px;cursor:pointer" style-hover="color:var(--accent2,#5f7050)">โปสเตอร์ · ชื่อหนัง{{ arrows.t }}</th>
+              <th onClick="{{ sorters.y }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ปี{{ arrows.y }}</th>
+              <th onClick="{{ sorters.genre }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">แนว{{ arrows.genre }}</th>
+              <th onClick="{{ sorters.run }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ความยาว{{ arrows.run }}</th>
+              <th onClick="{{ sorters.mpaa }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">เรท{{ arrows.mpaa }}</th>
+              <th onClick="{{ sorters.studio }}" style="{{ thBaseR }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">สตูดิโอ{{ arrows.studio }}</th>
+              <sc-if value="{{ showCrew }}" hint-placeholder-val="{{ true }}"><sc-for list="{{ crewHeaders }}" as="c" hint-placeholder-count="5">
+                <th onClick="{{ c.sort }}" style="{{ c.style }}" style-hover="color:var(--accent2,#5f7050)">{{ c.label }}{{ c.arrow }}</th>
+              </sc-for></sc-if>
+              <th onClick="{{ sorters.imdb }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">IMDb{{ arrows.imdb }}</th>
+              <th onClick="{{ sorters.imdbVotes }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">โหวต IMDb{{ arrows.imdbVotes }}</th>
+              <th onClick="{{ sorters.rt }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">RT %{{ arrows.rt }}</th>
+              <th onClick="{{ sorters.rtCount }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">RT รีวิว{{ arrows.rtCount }}</th>
+              <th onClick="{{ sorters.mc }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">Metacritic{{ arrows.mc }}</th>
+              <th onClick="{{ sorters.metaCount }}" style="{{ thBaseR }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">Meta รีวิว{{ arrows.metaCount }}</th>
+              <sc-if value="{{ showBox }}" hint-placeholder-val="{{ true }}"><th onClick="{{ sorters.bud }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ทุนสร้าง{{ arrows.bud }}</th>
+              <th onClick="{{ sorters.ww }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ทั่วโลก{{ arrows.ww }}</th>
+              <th onClick="{{ sorters.dom }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ในประเทศ{{ arrows.dom }}</th>
+              <th onClick="{{ sorters.intl }}" style="{{ thBaseCalc }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ต่างประเทศ <span style="font-size:9px;color:var(--accent,#889a76)">ƒ</span>{{ arrows.intl }}</th>
+              <th onClick="{{ sorters.pctDom }}" style="{{ thBaseCalcR }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">% ในประเทศ <span style="font-size:9px;color:var(--accent,#889a76)">ƒ</span>{{ arrows.pctDom }}</th></sc-if>
+              <th style="{{ thBase }}">ดูแล้ว</th>
+              <th style="{{ thBaseR }}">คะแนนของฉัน</th>
+              <th onClick="{{ sorters.res }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ความละเอียด{{ arrows.res }}</th>
+              <th onClick="{{ sorters.gb }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ขนาด (GB){{ arrows.gb }}</th>
+              <sc-if value="{{ showOscar }}" hint-placeholder-val="{{ true }}"><th onClick="{{ sorters.ow }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ชนะ{{ arrows.ow }}</th>
+              <th onClick="{{ sorters.on }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">เข้าชิง{{ arrows.on }}</th>
+              <th style="{{ thBaseR }}">รางวัล</th></sc-if>
+              <sc-if value="{{ showQuality }}" hint-placeholder-val="{{ true }}"><th style="{{ thBase }}">ภาพ / HDR</th>
+              <th onClick="{{ sorters.color }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">สี{{ arrows.color }}</th>
+              <th onClick="{{ sorters.aspect }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">Aspect{{ arrows.aspect }}</th>
+              <th style="{{ thBaseR }}">Aspect รอง</th></sc-if>
+              <sc-if value="{{ showAudio }}" hint-placeholder-val="{{ true }}"><th style="{{ thBase }}">เสียง</th>
+              <th style="{{ thBase }}">เสียง Eng</th>
+              <th style="{{ thBase }}">ซับ Eng</th>
+              <th style="{{ thBaseR }}">ไทย</th></sc-if>
+              <sc-if value="{{ showItunes }}" hint-placeholder-val="{{ true }}"><th onClick="{{ sorters.hasExtra }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">มี Extra{{ arrows.hasExtra }}</th>
+              <th style="{{ thBaseR }}">Extra ซับ</th></sc-if>
+              <sc-if value="{{ showPurchase }}" hint-placeholder-val="{{ true }}"><th onClick="{{ sorters.buyDate }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">วันที่ซื้อ{{ arrows.buyDate }}</th>
+              <th onClick="{{ sorters.buyTime }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">เวลา (24h){{ arrows.buyTime }}</th>
+              <th onClick="{{ sorters.price }}" style="{{ thBaseR }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ราคา{{ arrows.price }}</th></sc-if>
+              <sc-for list="{{ customCols }}" as="c" hint-placeholder-count="0">
+                <th style="{{ thBase }}white-space:nowrap"><span>{{ c.name }}</span> <span onClick="{{ c.del }}" style="cursor:pointer;color:#c97a6d;font-weight:700;padding:0 3px" title="ลบคอลัมน์">×</span></th>
+              </sc-for>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ rows }}" as="m" hint-placeholder-count="12">
+              <sc-if value="{{ m.isGroup }}" hint-placeholder-val="{{ false }}">
+              <tr>
+                <td style="position:sticky;left:0;z-index:3;background:var(--soft,#e7ecdf);padding:8px 12px;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9);border-top:1px solid var(--line,#ece5d9);font-weight:700;font-size:12.5px;color:var(--accent2,#5f7050);white-space:nowrap">▸ {{ m.groupLabel }} <span style="color:var(--muted,#9c9286);font-weight:600">· {{ m.groupCount }}</span></td>
+                <td colspan="{{ m.groupColspan }}" style="background:var(--soft,#e7ecdf);border-bottom:1px solid var(--line,#ece5d9);border-top:1px solid var(--line,#ece5d9)"></td>
+              </tr>
+              </sc-if>
+              <sc-if value="{{ m.isRow }}" hint-placeholder-val="{{ true }}">
+              <tr style="border-bottom:1px solid var(--line,#ece5d9)" style-hover="background:var(--soft,#e7ecdf)">
+                <td onClick="{{ m.open }}" onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="position:sticky;left:0;z-index:2;background:var(--surface,#fffdf9);padding:var(--rowpad,9px 12px);border-right:2px solid var(--line,#ece5d9);border-bottom:1px solid var(--line,#ece5d9);cursor:pointer">
+                  <div style="display:flex;align-items:center;gap:11px;position:relative">
+                    <span onClick="{{ m.toggleSel }}" style="{{ m.selChip }}">{{ m.selMark }}</span>
+                    <sc-if value="{{ showThumb }}" hint-placeholder-val="{{ false }}">
+                    <div style="width:34px;height:50px;border-radius:6px;flex:none;overflow:hidden;background:{{ m.grad }};box-shadow:0 2px 6px rgba(60,53,47,.2);position:relative;display:flex;align-items:center;justify-content:center">
+                      <span style="position:absolute;font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.9);font-size:15px;font-weight:600">{{ m.initial }}</span>
+                      <sc-if value="{{ m.hasImg }}" hint-placeholder-val="{{ true }}"><img src="{{ m.img }}" onError="{{ m.imgErr }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:relative" /></sc-if>
+                    </div>
+                    </sc-if>
+                    <div style="min-width:0"><div style="font-weight:600;font-size:13.5px;letter-spacing:-.2px">{{ m.t }}</div><sc-if value="{{ showThumb }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:var(--muted,#9c9286)">{{ m.th }}</div></sc-if></div>
+                  </div>
+                </td>
+                <td onClick="{{ m.eY.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eY.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eY.off }}" hint-placeholder-val="{{ true }}">{{ m.y }}</sc-if>
+                </td>
+                <td onClick="{{ m.openGenre }}" style="{{ tdL }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><span style="background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050);padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:600">{{ m.genre }}</span> <span style="color:var(--muted,#9c9286);font-size:9px">▾</span></td>
+                <td onClick="{{ m.eRun.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eRun.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eRun.off }}" hint-placeholder-val="{{ true }}">{{ m.runtime }}</sc-if>
+                </td>
+                <td onClick="{{ m.eMpaa.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eMpaa.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eMpaa.off }}" hint-placeholder-val="{{ true }}"><span style="border:1px solid var(--line,#ece5d9);border-radius:5px;padding:1px 6px;font-size:11px;font-weight:600;color:var(--muted,#9c9286)">{{ m.mpaa }}</span></sc-if>
+                </td>
+                <td onClick="{{ m.eStudio.start }}" style="{{ tdLR }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eStudio.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eStudio.off }}" hint-placeholder-val="{{ true }}">{{ m.studio }}</sc-if>
+                </td>
+                <sc-if value="{{ showCrew }}" hint-placeholder-val="{{ true }}"><sc-for list="{{ m.crewCells }}" as="c" hint-placeholder-count="5">
+                  <td onClick="{{ c.start }}" style="{{ c.style }}" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                    <sc-if value="{{ c.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                    <sc-if value="{{ c.off }}" hint-placeholder-val="{{ true }}">{{ c.val }}</sc-if>
+                  </td>
+                </sc-for></sc-if>
+                <td onClick="{{ m.eImdb.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eImdb.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="decimal" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eImdb.off }}" hint-placeholder-val="{{ true }}"><span style="color:#caa53a;font-weight:700">★ {{ m.imdb }}</span></sc-if>
+                </td>
+                <td style="{{ tdC }}font-variant-numeric:tabular-nums;color:var(--muted,#9c9286)">{{ m.imdbVotesLabel }}</td>
+                <td onClick="{{ m.eRt.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eRt.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eRt.off }}" hint-placeholder-val="{{ true }}"><span style="color:{{ m.rtColor }};font-weight:700">{{ m.rt }}</span></sc-if>
+                </td>
+                <td style="{{ tdC }}font-variant-numeric:tabular-nums;color:var(--muted,#9c9286)">{{ m.rtCountLabel }}</td>
+                <td onClick="{{ m.eMc.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eMc.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eMc.off }}" hint-placeholder-val="{{ true }}"><span style="display:inline-block;min-width:24px;background:{{ m.mcColor }};color:#fff;font-weight:700;font-size:11.5px;padding:2px 6px;border-radius:5px">{{ m.mc }}</span></sc-if>
+                </td>
+                <td style="{{ tdCR }}font-variant-numeric:tabular-nums;color:var(--muted,#9c9286)">{{ m.mcCountLabel }}</td>
+                <sc-if value="{{ showBox }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.eBud.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eBud.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eBud.off }}" hint-placeholder-val="{{ true }}">{{ m.budget }}</sc-if>
+                </td>
+                <td onClick="{{ m.eWw.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eWw.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eWw.off }}" hint-placeholder-val="{{ true }}">{{ m.ww }}</sc-if>
+                </td>
+                <td onClick="{{ m.eDom.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eDom.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eDom.off }}" hint-placeholder-val="{{ true }}">{{ m.dom }}</sc-if>
+                </td>
+                <td style="{{ tdCalc }}">{{ m.intl }}</td>
+                <td style="{{ tdCalcR }}">{{ m.pctDom }}</td></sc-if>
+                <td onClick="{{ m.toggle }}" style="text-align:center;padding:var(--rowpad,9px 12px);border-bottom:1px solid var(--line,#ece5d9);cursor:pointer">
+                  <span style="display:inline-flex;width:20px;height:20px;border-radius:6px;align-items:center;justify-content:center;border:1.5px solid {{ m.checkBorder }};background:{{ m.checkBg }};color:#fff;font-size:12px;font-weight:700">{{ m.checkMark }}</span>
+                </td>
+                <td style="text-align:center;padding:var(--rowpad,9px 12px);border-right:2px solid var(--line,#ece5d9);border-bottom:1px solid var(--line,#ece5d9)">
+                  <div style="display:inline-flex;gap:1px">
+                    <sc-for list="{{ m.stars }}" as="s" hint-placeholder-count="5"><span onClick="{{ s.set }}" style="color:{{ s.c }};font-size:14px;cursor:pointer">★</span></sc-for>
+                  </div>
+                </td>
+                <td onClick="{{ m.eRes.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eRes.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eRes.off }}" hint-placeholder-val="{{ true }}"><span style="background:var(--soft,#e7ecdf);border:1px solid var(--accent,#889a76);color:var(--accent2,#5f7050);padding:2px 9px;border-radius:6px;font-size:11.5px;font-weight:700">{{ m.res }}</span></sc-if>
+                </td>
+                <td onClick="{{ m.eGb.start }}" style="text-align:right;padding:var(--rowpad,9px 12px);border-bottom:1px solid var(--line,#ece5d9);font-variant-numeric:tabular-nums;cursor:cell;color:var(--ink,#3a352f)" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eGb.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="decimal" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eGb.off }}" hint-placeholder-val="{{ true }}">{{ m.gb }}</sc-if>
+                </td>
+                <sc-if value="{{ showOscar }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.eOw.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eOw.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eOw.off }}" hint-placeholder-val="{{ true }}"><span style="color:#9a7b2f;font-weight:700">🏆 {{ m.ow }}</span></sc-if>
+                </td>
+                <td onClick="{{ m.eOn.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eOn.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eOn.off }}" hint-placeholder-val="{{ true }}">{{ m.on }}</sc-if>
+                </td>
+                <td onClick="{{ m.eAw.start }}" style="{{ tdLR }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eAw.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eAw.off }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px;color:var(--ink,#3a352f)">{{ m.aw }}</span></sc-if>
+                </td></sc-if>
+                <sc-if value="{{ showQuality }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.openHdr }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.hdrTags }}" as="x" hint-placeholder-count="2"><span style="background:#efe7d4;border:1px solid #e0d2ad;color:#8a6d2f;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:700">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
+                <td onClick="{{ m.eColor.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eColor.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eColor.off }}" hint-placeholder-val="{{ true }}"><span style="background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050);padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;white-space:nowrap">{{ m.color }}</span></sc-if>
+                </td>
+                <td onClick="{{ m.eAspect.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eAspect.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eAspect.off }}" hint-placeholder-val="{{ true }}">{{ m.aspect }}</sc-if>
+                </td>
+                <td onClick="{{ m.eAspect2.start }}" style="{{ tdCR }}cursor:cell;font-size:11.5px;color:var(--muted,#9c9286)" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eAspect2.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eAspect2.off }}" hint-placeholder-val="{{ true }}">{{ m.aspect2 }}</sc-if>
+                </td></sc-if>
+                <sc-if value="{{ showAudio }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.openAudio }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.audioTags }}" as="x" hint-placeholder-count="2"><span style="background:#e9e6f2;border:1px solid #d6cfe6;color:#6d5d86;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:700">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
+                <td onClick="{{ m.openAudioEng }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.audioEngTags }}" as="x" hint-placeholder-count="3"><span style="background:var(--bg,#f5f1ea);border:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f);padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
+                <td onClick="{{ m.openSubEng }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.subEngTags }}" as="x" hint-placeholder-count="3"><span style="background:var(--bg,#f5f1ea);border:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f);padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
+                <td onClick="{{ m.openThai }}" style="{{ tdCR }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.thaiTags }}" as="x" hint-placeholder-count="2"><span style="background:#e8efe9;border:1px solid #cfe0d3;color:#3f7d52;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td></sc-if>
+                <sc-if value="{{ showItunes }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.toggleExtra }}" style="{{ tdC }}cursor:pointer" style-hover="background:var(--soft,#e7ecdf)"><span style="{{ m.extraChip }}">{{ m.extraIcon }}</span></td>
+                <td onClick="{{ m.eExtraSub.start }}" style="{{ tdCR }}cursor:cell;font-size:11.5px" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eExtraSub.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eExtraSub.off }}" hint-placeholder-val="{{ true }}">{{ m.extraSub }}</sc-if>
+                </td></sc-if>
+                <sc-if value="{{ showPurchase }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.eBuyDate.start }}" style="{{ tdC }}cursor:cell;font-variant-numeric:tabular-nums" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eBuyDate.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eBuyDate.off }}" hint-placeholder-val="{{ true }}">{{ m.buyDate }}</sc-if>
+                </td>
+                <td onClick="{{ m.eBuyTime.start }}" style="{{ tdC }}cursor:cell;font-variant-numeric:tabular-nums;color:var(--accent2,#5f7050);font-weight:600" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eBuyTime.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eBuyTime.off }}" hint-placeholder-val="{{ true }}">{{ m.buyTime }}</sc-if>
+                </td>
+                <td onClick="{{ m.ePrice.start }}" style="{{ tdCR }}cursor:cell;font-weight:600" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.ePrice.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.ePrice.off }}" hint-placeholder-val="{{ true }}">{{ m.priceLabel }}</sc-if>
+                </td></sc-if>
+                <sc-for list="{{ m.customCells }}" as="cc" hint-placeholder-count="0">
+                  <td style="text-align:center;padding:var(--rowpad,9px 12px);border-bottom:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f)">
+                    <sc-if value="{{ cc.ctSingle }}" hint-placeholder-val="{{ false }}"><select value="{{ cc.singleVal }}" onChange="{{ cc.onSingle }}" style="{{ cselStyle }}"><sc-for list="{{ cc.selOptions }}" as="o" hint-placeholder-count="2"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></sc-if>
+                    <sc-if value="{{ cc.ctMulti }}" hint-placeholder-val="{{ false }}"><div onClick="{{ cc.openMulti }}" style="display:flex;gap:3px;flex-wrap:wrap;justify-content:center;align-items:center;cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><sc-for list="{{ cc.multiChips }}" as="x" hint-placeholder-count="2"><span style="background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050);padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:10px">▾</span></div></sc-if>
+                    <sc-if value="{{ cc.ctCheck }}" hint-placeholder-val="{{ false }}"><span onClick="{{ cc.toggleCheck }}" style="{{ cc.checkChip }}">{{ cc.checkIcon }}</span></sc-if>
+                    <sc-if value="{{ cc.ctStar }}" hint-placeholder-val="{{ false }}"><div style="display:inline-flex;gap:1px"><sc-for list="{{ cc.starArr }}" as="s" hint-placeholder-count="5"><span onClick="{{ s.set }}" style="color:{{ s.c }};cursor:pointer;font-size:13px">★</span></sc-for></div></sc-if>
+                    <sc-if value="{{ cc.ctText }}" hint-placeholder-val="{{ true }}"><div onClick="{{ cc.start }}" style="cursor:cell;min-height:15px;color:var(--muted,#9c9286)" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><sc-if value="{{ cc.textOn }}" hint-placeholder-val="{{ false }}"><input value="{{ ceditVal }}" onInput="{{ cChange }}" onKeyDown="{{ cKey }}" onBlur="{{ cCommit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if><sc-if value="{{ cc.textOff }}" hint-placeholder-val="{{ true }}">{{ cc.display }}</sc-if></div></sc-if>
+                  </td>
+                </sc-for>
+              </tr>
+              </sc-if>
+            </sc-for>
+          </tbody>
+          <tfoot>
+            <tr style="position:sticky;bottom:0;z-index:3">
+              <td style="position:sticky;left:0;z-index:5;background:var(--surf2,#f1ebe1);padding:11px 12px;font-weight:700;font-size:12px;color:var(--muted,#9c9286);border-right:2px solid var(--line,#ece5d9);border-top:2px solid var(--line,#ece5d9)">∑ สรุป ({{ rowCount }} เรื่อง)</td>
+              <td colspan="{{ footColspan }}" style="background:var(--surf2,#f1ebe1);border-top:2px solid var(--line,#ece5d9);padding:11px 14px">
+                <div style="display:flex;gap:26px;font-size:12px;font-weight:600;white-space:nowrap">
+                  <span style="color:#caa53a">IMDb เฉลี่ย ★ {{ sum_imdb }}</span>
+                  <span style="color:var(--accent2,#5f7050)">RT เฉลี่ย {{ sum_rt }}</span>
+                  <span style="color:var(--muted,#9c9286)">% ในประเทศ {{ avgDomLabel }}</span>
+                  <span style="color:var(--accent2,#5f7050)">ขนาดรวม {{ sum_gb }}</span>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ============ DASHBOARD ============ -->
+    <sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:26px 28px 60px;max-width:1180px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:22px">
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:20px;animation:fadeUp .4s ease both">
+          <div style="font-size:12.5px;color:var(--muted,#9c9286);font-weight:600">หนังที่ซื้อ (iTunes)</div>
+          <div style="font-size:34px;font-weight:700;letter-spacing:-1px;margin-top:4px">{{ stat_total }}<span style="font-size:15px;color:var(--muted,#9c9286);font-weight:600"> เรื่อง</span></div>
+        </div>
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:20px;animation:fadeUp .4s ease .05s both">
+          <div style="font-size:12.5px;color:var(--muted,#9c9286);font-weight:600">ซื้อแล้วยังไม่ได้ดู</div>
+          <div style="font-size:34px;font-weight:700;letter-spacing:-1px;margin-top:4px;color:var(--accent2,#5f7050)">{{ unwatchedN }}<span style="font-size:15px;color:var(--muted,#9c9286);font-weight:600"> / {{ stat_total }}</span></div>
+        </div>
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:20px;animation:fadeUp .4s ease .1s both">
+          <div style="font-size:12.5px;color:var(--muted,#9c9286);font-weight:600">คะแนน IMDb เฉลี่ย</div>
+          <div style="font-size:34px;font-weight:700;letter-spacing:-1px;margin-top:4px;color:#caa53a">★ {{ avg_imdb }}</div>
+        </div>
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:20px;animation:fadeUp .4s ease .15s both">
+          <div style="font-size:12.5px;color:var(--muted,#9c9286);font-weight:600">ใช้จ่ายซื้อหนังรวม</div>
+          <div style="font-size:34px;font-weight:700;letter-spacing:-1px;margin-top:4px">฿{{ stat_spend }}</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin-bottom:18px">
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:22px">
+          <div style="font-weight:700;font-size:14.5px;margin-bottom:18px">จำนวนหนังแยกตามปี</div>
+          <div style="display:flex;align-items:flex-end;gap:10px;height:170px">
+            <sc-for list="{{ byYear }}" as="b" hint-placeholder-count="8">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end">
+                <div style="font-size:12px;font-weight:700;color:var(--accent2,#5f7050)">{{ b.n }}</div>
+                <div style="width:100%;max-width:42px;height:{{ b.h }};background:linear-gradient(to top,var(--accent2,#5f7050),var(--accent,#889a76));border-radius:7px 7px 3px 3px;transform-origin:bottom;animation:barGrow .6s cubic-bezier(.2,.8,.3,1) both"></div>
+                <div style="font-size:11px;color:var(--muted,#9c9286);font-weight:600">{{ b.y }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:22px">
+          <div style="font-weight:700;font-size:14.5px;margin-bottom:18px">สัดส่วนการรับชม</div>
+          <div style="display:flex;align-items:center;gap:24px">
+            <div style="width:138px;height:138px;border-radius:50%;background:{{ pie }};flex:none;box-shadow:0 4px 16px rgba(60,53,47,.16);border:3px solid var(--surface,#fffdf9)"></div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:14px;height:14px;border-radius:4px;background:var(--accent2,#5f7050);flex:none"></span><div><div style="font-size:13px;font-weight:600">ดูแล้ว · {{ watchedPct }}</div><div style="font-size:11.5px;color:var(--muted,#9c9286)">{{ watchedN }} เรื่อง</div></div></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:14px;height:14px;border-radius:4px;background:var(--accent,#889a76);flex:none"></span><div><div style="font-size:13px;font-weight:600">ยังไม่ดู · {{ unwatchedPct }}</div><div style="font-size:11.5px;color:var(--muted,#9c9286)">{{ unwatchedN }} เรื่อง</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:22px">
+          <div style="font-weight:700;font-size:14.5px;margin-bottom:16px">แยกตามแนวหนัง</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ byGenre }}" as="g" hint-placeholder-count="6">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span style="font-weight:600">{{ g.name }}</span><span style="color:var(--muted,#9c9286);font-weight:600">{{ g.n }}</span></div>
+                <div style="height:9px;border-radius:5px;background:var(--soft,#e7ecdf);overflow:hidden"><div style="height:100%;width:{{ g.w }};background:linear-gradient(90deg,var(--accent,#889a76),var(--accent2,#5f7050));border-radius:5px"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:22px">
+          <div style="font-weight:700;font-size:14.5px;margin-bottom:16px">ความละเอียดไฟล์</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ byRes }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:14px">
+                <span style="font-size:12.5px;font-weight:700;width:88px;color:var(--ink,#3a352f)">{{ r.name }}</span>
+                <div style="flex:1;height:24px;border-radius:7px;background:var(--soft,#e7ecdf);overflow:hidden"><div style="height:100%;width:{{ r.w }};background:{{ r.c }};border-radius:7px;display:flex;align-items:center;justify-content:flex-end;padding-right:9px;color:#fff;font-size:11px;font-weight:700">{{ r.n }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line,#ece5d9);display:flex;justify-content:space-between">
+            <div><div style="font-size:11.5px;color:var(--muted,#9c9286);font-weight:600">RT เฉลี่ย</div><div style="font-size:19px;font-weight:700;color:var(--accent2,#5f7050)">{{ avg_rt }}</div></div>
+            <div><div style="font-size:11.5px;color:var(--muted,#9c9286);font-weight:600">Metacritic เฉลี่ย</div><div style="font-size:19px;font-weight:700">{{ avg_mc }}</div></div>
+            <div><div style="font-size:11.5px;color:var(--muted,#9c9286);font-weight:600">เคยดูในโรง</div><div style="font-size:19px;font-weight:700">{{ theaterN }}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ============ ADD MOVIE ============ -->
+    <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:32px 28px 60px;max-width:760px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:6px;font-size:22px;font-weight:700;letter-spacing:-.4px">เพิ่มหนังใหม่</div>
+      <div style="text-align:center;color:var(--muted,#9c9286);font-size:13.5px;margin-bottom:24px">ค้นหาชื่อหนัง แล้วระบบดึงโปสเตอร์ · คะแนน · ข้อมูลจาก TMDb &amp; OMDb อัตโนมัติ</div>
+
+      <div style="position:relative;margin-bottom:22px">
+        <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted,#9c9286);font-size:18px">⌕</span>
+        <input value="{{ addQuery }}" onInput="{{ onAddQuery }}" placeholder="พิมพ์ชื่อหนัง เช่น Tenet, Coco…" style="width:100%;height:52px;border-radius:14px;border:1.5px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);padding:0 16px 0 46px;font-size:15px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76);box-shadow:0 0 0 4px var(--soft,#e7ecdf)">
+      </div>
+
+      <sc-if value="{{ addFetching }}" hint-placeholder-val="{{ false }}">
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;padding:34px;display:flex;flex-direction:column;align-items:center;gap:16px">
+          <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--soft,#e7ecdf);border-top-color:var(--accent2,#5f7050);animation:spin .8s linear infinite"></div>
+          <div style="font-weight:600;font-size:14px">กำลังดึงข้อมูลของ “{{ addSelTitle }}”…</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--muted,#9c9286)">
+            <div>◯ TMDb — รายละเอียด + ทีมงาน</div>
+            <div style="animation:pulse 1.2s ease infinite">◯ OMDb — คะแนน · รางวัล · Box Office</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ addReady }}" hint-placeholder-val="{{ false }}">
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:16px;overflow:hidden;animation:fadeUp .35s ease both">
+          <div style="display:flex;gap:18px;padding:20px;background:var(--soft,#e7ecdf)">
+            <div style="width:78px;height:116px;border-radius:9px;flex:none;overflow:hidden;background:{{ addSelGrad }};box-shadow:0 6px 16px -4px rgba(60,53,47,.35)">
+              <sc-if value="{{ addSelHasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ addSelImg }}" loading="lazy" style="width:100%;height:100%;object-fit:cover" /></sc-if>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="display:inline-flex;align-items:center;gap:5px;background:#dff0e2;color:#3f7d52;font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;margin-bottom:7px">✓ ดึงข้อมูลสำเร็จ</div>
+              <div style="font-size:19px;font-weight:700;letter-spacing:-.3px">{{ addSelTitle }} <span style="color:var(--muted,#9c9286);font-weight:500">({{ addSelYear }})</span></div>
+              <div style="display:flex;gap:14px;margin-top:8px;font-size:13px">
+                <span style="color:#caa53a;font-weight:700">★ {{ addSelImdb }} IMDb</span>
+                <span style="color:var(--accent2,#5f7050);font-weight:700">🍅 {{ addSelRt }}</span>
+                <span style="color:var(--muted,#9c9286)">{{ addSelRuntime }} นาที</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:20px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">ดึงอัตโนมัติ</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;margin-bottom:22px">
+              <sc-for list="{{ addAutoFields }}" as="f" hint-placeholder-count="6">
+                <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed var(--line,#ece5d9);padding-bottom:7px">
+                  <span style="font-size:12.5px;color:var(--muted,#9c9286)">{{ f.k }}</span>
+                  <span style="font-size:13px;font-weight:600;text-align:right;max-width:62%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.v }} <span style="color:#5fa56f;font-size:11px">✓</span></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">กรอกเอง</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ขนาดไฟล์ (GB)</label><input placeholder="เช่น 42.5" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ราคาที่ซื้อ (฿)</label><input placeholder="เช่น 599" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ความละเอียด</label>
+                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <sc-for list="{{ manualResBtns }}" as="b" hint-placeholder-count="3"><span onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</span></sc-for>
+                </div>
+              </div>
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">คะแนนส่วนตัว</label><div style="display:flex;gap:2px;font-size:22px"><sc-for list="{{ manualStarArr }}" as="s" hint-placeholder-count="5"><span onClick="{{ s.set }}" style="color:{{ s.c }};cursor:pointer">★</span></sc-for></div></div>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end">
+              <button onClick="{{ addCancel }}" style="height:42px;padding:0 18px;border-radius:11px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);font-weight:600;font-size:13.5px;color:var(--ink,#3a352f)" style-hover="background:var(--bg,#f5f1ea)">ยกเลิก</button>
+              <button onClick="{{ addSave }}" style="height:42px;padding:0 22px;border-radius:11px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:13.5px;box-shadow:0 3px 10px rgba(95,112,80,.25)" style-hover="filter:brightness(1.07)">บันทึกลงคอลเลกชัน</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ addShowResults }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">ผลการค้นหาจาก TMDb</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <sc-for list="{{ addResults }}" as="r" hint-placeholder-count="4">
+            <div onClick="{{ r.pick }}" style="display:flex;align-items:center;gap:15px;background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:13px;padding:11px 14px;cursor:pointer;transition:border-color .2s,transform .15s" style-hover="border-color:var(--accent,#889a76);transform:translateX(3px)">
+              <div style="width:42px;height:62px;border-radius:7px;flex:none;overflow:hidden;background:{{ r.grad }}">
+                <sc-if value="{{ r.hasImg }}" hint-placeholder-val="{{ true }}"><img src="{{ r.img }}" onError="{{ r.imgErr }}" loading="lazy" style="width:100%;height:100%;object-fit:cover" /></sc-if>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:600;font-size:14.5px">{{ r.t }} <span style="color:var(--muted,#9c9286);font-weight:500">· {{ r.y }}</span></div>
+                <div style="font-size:12px;color:var(--muted,#9c9286);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</div>
+              </div>
+              <span style="width:34px;height:34px;border-radius:9px;background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex:none">＋</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ============ PEOPLE FILTER ============ -->
+    <sc-if value="{{ isPeople }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:24px 28px 60px;max-width:1120px">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap">
+        <div style="position:relative;width:320px">
+          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted,#9c9286);font-size:14px">⌕</span>
+          <input value="{{ peopleSearch }}" onInput="{{ onPeopleSearch }}" placeholder="ค้นหาชื่อ ผกก. · นักแสดง · ทีมงาน…" style="width:100%;height:40px;border-radius:11px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);padding:0 12px 0 34px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)">
+        </div>
+        <sc-if value="{{ peopleActive }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:10px;background:var(--soft,#e7ecdf);border:1px solid var(--accent,#889a76);border-radius:11px;padding:5px 6px 5px 14px">
+            <span style="font-size:12.5px;font-weight:700;color:var(--accent2,#5f7050)">{{ peopleBanner }}</span>
+            <button onClick="{{ clearPeople }}" style="height:28px;padding:0 12px;border-radius:8px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:12px">ล้างตัวกรอง</button>
+          </div>
+        </sc-if>
+        <span style="font-size:12px;color:var(--muted,#9c9286);margin-left:auto">ติ๊กชื่อเพื่อกรองคอลเลกชัน · ตรงเงื่อนไข {{ rowCount }} เรื่อง</span>
+      </div>
+
+      <sc-if value="{{ peopleActive }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:24px;background:var(--surface,#fffdf9);border:1px solid var(--accent,#889a76);border-radius:16px;padding:18px 20px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin-bottom:14px">🎬 หนังที่ตรงเงื่อนไข · {{ rowCount }} เรื่อง</div>
+          <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+            <div style="color:var(--muted,#9c9286);font-size:13px;padding:6px 0">ไม่พบหนังของบุคคลที่เลือก</div>
+          </sc-if>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:16px">
+            <sc-for list="{{ cards }}" as="m" hint-placeholder-count="4">
+              <div onClick="{{ m.open }}" style="cursor:pointer;animation:pop .3s ease both">
+                <div style="position:relative;aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:{{ m.grad }};box-shadow:0 6px 16px -6px rgba(60,53,47,.32);display:flex;align-items:center;justify-content:center;transition:transform .2s" style-hover="transform:translateY(-3px)">
+                  <span style="position:absolute;font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.9);font-size:30px;font-weight:500">{{ m.initial }}</span>
+                  <sc-if value="{{ m.hasImg }}" hint-placeholder-val="{{ true }}"><img src="{{ m.img }}" onError="{{ m.imgErr }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" /></sc-if>
+                  <span style="position:absolute;top:7px;right:7px;background:rgba(15,12,10,.62);backdrop-filter:blur(6px);color:#ffd66b;font-weight:700;font-size:10.5px;padding:2px 6px;border-radius:6px">★ {{ m.imdb }}</span>
+                </div>
+                <div style="margin-top:7px;font-size:12.5px;font-weight:600;line-height:1.2;letter-spacing:-.2px">{{ m.t }}</div>
+                <div style="font-size:11px;color:var(--muted,#9c9286)">{{ m.th }} · {{ m.y }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="columns:3;column-gap:18px">
+        <sc-for list="{{ peopleGroups }}" as="g" hint-placeholder-count="6">
+          <div style="break-inside:avoid;background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:14px;padding:14px 16px;margin-bottom:18px;display:inline-block;width:100%">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--accent2,#5f7050);margin-bottom:10px">{{ g.label }} <span style="color:var(--muted,#9c9286)">· {{ g.count }}</span></div>
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <sc-for list="{{ g.items }}" as="p" hint-placeholder-count="6">
+                <div onClick="{{ p.toggle }}" style="display:flex;align-items:center;gap:9px;padding:5px 7px;border-radius:8px;cursor:pointer" style-hover="background:var(--soft,#e7ecdf)">
+                  <span style="{{ p.box }}">{{ p.check }}</span>
+                  <span style="flex:1;font-size:13px;color:var(--ink,#3a352f);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span>
+                  <span style="font-size:11px;color:var(--muted,#9c9286);font-weight:600">{{ p.count }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+  </div>
+</div>
+
+<!-- ===================== DETAIL DRAWER ===================== -->
+<sc-if value="{{ hasSelected }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeMovie }}" style="position:fixed;inset:0;background:rgba(40,34,28,.42);backdrop-filter:blur(3px);z-index:50;display:flex;justify-content:flex-end">
+  <div onClick="{{ stop }}" style="width:560px;max-width:94vw;height:100%;background:var(--bg,#f5f1ea);box-shadow:-20px 0 50px -20px rgba(0,0,0,.4);overflow-y:auto;animation:slideIn .32s cubic-bezier(.22,.7,.3,1) both">
+    <div style="position:relative;height:230px;background:{{ d.grad }};overflow:hidden">
+      <sc-if value="{{ d.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ d.img }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%;filter:saturate(1.02)" /></sc-if>
+      <div style="position:absolute;inset:0;background:radial-gradient(circle at 75% 20%,rgba(255,255,255,.22),transparent 55%)"></div>
+      <button onClick="{{ closeMovie }}" style="position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);font-size:18px;display:flex;align-items:center;justify-content:center;color:#3a352f" style-hover="background:#fff">✕</button>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:54px 26px 22px;background:linear-gradient(to top,rgba(20,16,12,.85),transparent)">
+        <div style="display:flex;gap:8px;margin-bottom:9px">
+          <span style="background:rgba(255,255,255,.92);color:#caa53a;font-weight:700;font-size:12px;padding:3px 9px;border-radius:8px">★ {{ d.imdb }} IMDb</span>
+          <span style="background:{{ d.rtColor }};color:#fff;font-weight:700;font-size:12px;padding:3px 9px;border-radius:8px">🍅 {{ d.rt }}</span>
+          <span style="background:{{ d.mcColor }};color:#fff;font-weight:700;font-size:12px;padding:3px 9px;border-radius:8px">Ⓜ {{ d.mc }}</span>
+        </div>
+        <div style="color:#fff;font-size:25px;font-weight:700;letter-spacing:-.5px;line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.4)">{{ d.t }}</div>
+        <div style="color:rgba(255,255,255,.82);font-size:13.5px;margin-top:3px">{{ d.th }} · {{ d.y }} · {{ d.runtime }} นาที · {{ d.mpaa }}</div>
+      </div>
+    </div>
+
+    <div style="padding:22px 26px 40px">
+      <div style="display:flex;gap:9px;margin-bottom:11px">
+        <button onClick="{{ refreshMovie }}" style="flex:1;height:42px;border-radius:11px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:7px" style-hover="filter:brightness(1.07)"><span style="{{ refreshSpin }}">↻</span> {{ refreshLabel }}</button>
+        <button onClick="{{ editDetail }}" style="flex:1;height:42px;border-radius:11px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);font-weight:600;font-size:13.5px;color:var(--ink,#3a352f)" style-hover="border-color:var(--accent,#889a76)">✎ แก้ไข</button>
+        <button onClick="{{ deleteSelected }}" style="width:46px;height:42px;border-radius:11px;border:1px solid #e6c4be;background:var(--surface,#fffdf9);font-weight:600;font-size:15px;color:#c2685c" style-hover="background:#fbeeec;border-color:#c2685c" title="ลบออกจากคลัง">🗑</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:20px">
+        <a href="{{ d.imdbUrl }}" target="_blank" rel="noopener" style="flex:1;height:40px;border-radius:11px;background:#f5c518;color:#1a1a1a;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none" style-hover="filter:brightness(1.05)">IMDb <span style="font-size:11px;opacity:.7">↗</span></a>
+        <a href="{{ d.rtUrl }}" target="_blank" rel="noopener" style="flex:1;height:40px;border-radius:11px;background:#fa320a;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none" style-hover="filter:brightness(1.07)">🍅 RT <span style="font-size:11px;opacity:.8">↗</span></a>
+        <a href="{{ d.mcUrl }}" target="_blank" rel="noopener" style="flex:1;height:40px;border-radius:11px;background:#1c1c1c;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none" style-hover="filter:brightness(1.25)">Ⓜ Meta <span style="font-size:11px;opacity:.7">↗</span></a>
+      </div>
+
+      <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:14px;padding:8px 18px;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.8px;color:var(--accent2,#5f7050);text-transform:uppercase;padding:11px 0 4px">🎬 ข้อมูลหนัง</div>
+        <div style="font-size:13.5px;line-height:1.65;color:var(--ink,#3a352f);padding-bottom:12px">{{ d.syn }}</div>
+        <sc-for list="{{ d.infoRows }}" as="r" hint-placeholder-count="4">
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line,#ece5d9);font-size:13px"><span style="color:var(--muted,#9c9286)">{{ r.k }}</span><span style="font-weight:600;text-align:right;max-width:64%">{{ r.v }}</span></div>
+        </sc-for>
+      </div>
+
+      <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:14px;padding:8px 18px;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.8px;color:var(--accent2,#5f7050);text-transform:uppercase;padding:11px 0 4px">🎭 ทีมงาน</div>
+        <sc-for list="{{ d.crewRows }}" as="r" hint-placeholder-count="4">
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line,#ece5d9);font-size:13px"><span style="color:var(--muted,#9c9286)">{{ r.k }}</span><span style="font-weight:600;text-align:right;max-width:64%">{{ r.v }}</span></div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:14px;padding:16px 18px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.8px;color:#9a6b3f;text-transform:uppercase;margin-bottom:12px">💰 Box Office</div>
+          <sc-for list="{{ d.boxRows }}" as="r" hint-placeholder-count="4">
+            <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12.5px"><span style="color:var(--muted,#9c9286)">{{ r.k }}</span><span style="font-weight:600">{{ r.v }}</span></div>
+          </sc-for>
+        </div>
+        <div style="background:var(--surface,#fffdf9);border:1px solid var(--line,#ece5d9);border-radius:14px;padding:16px 18px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.8px;color:#566378;text-transform:uppercase;margin-bottom:12px">💾 ไฟล์ที่ซื้อ</div>
+          <sc-for list="{{ d.fileRows }}" as="r" hint-placeholder-count="4">
+            <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12.5px"><span style="color:var(--muted,#9c9286)">{{ r.k }}</span><span style="font-weight:600;text-align:right">{{ r.v }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background:var(--soft,#e7ecdf);border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:12px;color:var(--accent2,#5f7050);font-weight:700;margin-bottom:5px">📺 สถานะของฉัน</div>
+          <div style="display:flex;gap:1px;font-size:18px">
+            <sc-for list="{{ d.stars }}" as="s" hint-placeholder-count="5"><span style="color:{{ s.c }}">★</span></sc-for>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:12.5px;color:var(--ink,#3a352f)">
+          <div style="font-weight:600">{{ d.watchedLabel }}</div>
+          <div style="color:var(--muted,#9c9286);margin-top:3px">{{ d.theaterLabel }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- ===================== ADD COLUMN MODAL ===================== -->
+<sc-if value="{{ showAddCol }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(40,34,28,.42);backdrop-filter:blur(3px);z-index:55;display:flex;align-items:center;justify-content:center">
+  <div onClick="{{ stop }}" style="width:520px;max-width:92vw;background:var(--surface,#fffdf9);border-radius:18px;box-shadow:0 24px 60px -16px rgba(0,0,0,.45);overflow:hidden;animation:pop .3s ease both">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--line,#ece5d9);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:17px;font-weight:700">เพิ่มคอลัมน์ใหม่</div>
+      <button onClick="{{ closeModal }}" style="width:32px;height:32px;border-radius:9px;color:var(--muted,#9c9286);font-size:17px" style-hover="background:var(--bg,#f5f1ea)">✕</button>
+    </div>
+    <div style="padding:22px 24px">
+      <label style="font-size:12px;font-weight:600;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ชื่อคอลัมน์</label>
+      <input value="{{ newColName }}" onInput="{{ onColName }}" placeholder="เช่น ผู้แนะนำ, หมวดหมู่ของฉัน…" style="width:100%;height:44px;border-radius:11px;border:1.5px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 14px;font-size:14px;color:var(--ink,#3a352f);margin-bottom:18px" style-focus="border-color:var(--accent,#889a76)">
+      <label style="font-size:12px;font-weight:600;color:var(--muted,#9c9286);display:block;margin-bottom:9px">ชนิดข้อมูล</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ typeBtns }}" as="ty" hint-placeholder-count="11"><span onClick="{{ ty.set }}" style="{{ ty.style }}">{{ ty.label }}</span></sc-for>
+      </div>
+      <sc-if value="{{ colNeedsOptions }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:16px">
+          <label style="font-size:12px;font-weight:600;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ตัวเลือก (คั่นด้วย , หรือขึ้นบรรทัดใหม่)</label>
+          <textarea value="{{ newColOptions }}" onInput="{{ onColOptions }}" placeholder="เช่น Atmos, DD7.1, DD5.1, AAC2.0" style="width:100%;height:74px;border-radius:11px;border:1.5px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:10px 12px;font-size:13px;color:var(--ink,#3a352f);font-family:inherit;resize:vertical" style-focus="border-color:var(--accent,#889a76)"></textarea>
+        </div>
+      </sc-if>
+    </div>
+    <div style="padding:16px 24px;background:var(--bg,#f5f1ea);display:flex;gap:10px;justify-content:flex-end">
+      <button onClick="{{ closeModal }}" style="height:42px;padding:0 18px;border-radius:11px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);font-weight:600;font-size:13.5px;color:var(--ink,#3a352f)" style-hover="background:var(--bg,#f5f1ea)">ยกเลิก</button>
+      <button onClick="{{ addColumn }}" style="height:42px;padding:0 22px;border-radius:11px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:13.5px;box-shadow:0 3px 10px rgba(95,112,80,.25)" style-hover="filter:brightness(1.07)">＋ เพิ่มคอลัมน์</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- ===================== CSV IMPORT MODAL ===================== -->
+<sc-if value="{{ showCsv }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(40,34,28,.42);backdrop-filter:blur(3px);z-index:55;display:flex;align-items:center;justify-content:center">
+  <div onClick="{{ stop }}" style="width:560px;max-width:92vw;background:var(--surface,#fffdf9);border-radius:18px;box-shadow:0 24px 60px -16px rgba(0,0,0,.45);overflow:hidden;animation:pop .3s ease both">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--line,#ece5d9);display:flex;align-items:center;justify-content:space-between">
+      <div><div style="font-size:17px;font-weight:700">นำเข้าจาก CSV</div><div style="font-size:12px;color:var(--muted,#9c9286)">จับคู่คอลัมน์จาก Google Sheet เดิมเข้ากับระบบ</div></div>
+      <button onClick="{{ closeModal }}" style="width:32px;height:32px;border-radius:9px;color:var(--muted,#9c9286);font-size:17px" style-hover="background:var(--bg,#f5f1ea)">✕</button>
+    </div>
+    <div style="padding:22px 24px">
+      <div style="border:2px dashed var(--line,#ece5d9);border-radius:13px;padding:22px;text-align:center;background:var(--bg,#f5f1ea);margin-bottom:18px">
+        <div style="font-size:26px;margin-bottom:4px">⤓</div>
+        <div style="font-size:13.5px;font-weight:600">movies_collection.csv</div>
+        <div style="font-size:12px;color:var(--muted,#9c9286)">247 แถว · 31 คอลัมน์ · พร้อมจับคู่</div>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:10px">จับคู่คอลัมน์</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ csvMap }}" as="r" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+            <span style="flex:1;background:var(--bg,#f5f1ea);border:1px solid var(--line,#ece5d9);border-radius:8px;padding:7px 11px;font-weight:500">{{ r.from }}</span>
+            <span style="color:var(--accent,#889a76);font-weight:700">→</span>
+            <span style="flex:1;background:var(--soft,#e7ecdf);border:1px solid var(--accent,#889a76);border-radius:8px;padding:7px 11px;font-weight:600;color:var(--accent2,#5f7050)">{{ r.to }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="padding:16px 24px;background:var(--bg,#f5f1ea);display:flex;gap:10px;justify-content:flex-end;align-items:center">
+      <span style="font-size:12px;color:var(--muted,#9c9286);margin-right:auto">หลังนำเข้า ระบบจะรัน auto-fetch เติมคะแนน/โปสเตอร์ให้</span>
+      <button onClick="{{ closeModal }}" style="height:42px;padding:0 18px;border-radius:11px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);font-weight:600;font-size:13.5px;color:var(--ink,#3a352f)" style-hover="background:var(--bg,#f5f1ea)">ยกเลิก</button>
+      <button onClick="{{ csvImport }}" style="height:42px;padding:0 22px;border-radius:11px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:13.5px;box-shadow:0 3px 10px rgba(95,112,80,.25)" style-hover="filter:brightness(1.07)">เริ่มนำเข้า</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- ===================== EDIT MOVIE MODAL ===================== -->
+<sc-if value="{{ showEdit }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(40,34,28,.42);backdrop-filter:blur(3px);z-index:60;display:flex;align-items:center;justify-content:center">
+  <div onClick="{{ stop }}" style="width:540px;max-width:92vw;max-height:90vh;overflow-y:auto;background:var(--surface,#fffdf9);border-radius:18px;box-shadow:0 24px 60px -16px rgba(0,0,0,.45);animation:pop .3s ease both">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--line,#ece5d9);display:flex;align-items:center;justify-content:space-between">
+      <div><div style="font-size:17px;font-weight:700">✎ แก้ไขข้อมูลหนัง</div><div style="font-size:12px;color:var(--muted,#9c9286)">ปรับข้อมูลแล้วบันทึกลงคอลเลกชันทันที</div></div>
+      <button onClick="{{ closeModal }}" style="width:32px;height:32px;border-radius:9px;color:var(--muted,#9c9286);font-size:17px" style-hover="background:var(--bg,#f5f1ea)">✕</button>
+    </div>
+    <div style="padding:22px 24px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin-bottom:10px">🎬 ข้อมูลหนัง</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px">
+        <div style="grid-column:1/3"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ชื่อหนัง (อังกฤษ)</label><input value="{{ ef.t }}" onInput="{{ efH.t }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div style="grid-column:1/3"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ชื่อไทย</label><input value="{{ ef.th }}" onInput="{{ efH.th }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ปี</label><input value="{{ ef.y }}" onInput="{{ efH.y }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ความยาว (นาที)</label><input value="{{ ef.run }}" onInput="{{ efH.run }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div style="grid-column:1/3"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">สตูดิโอ</label><input value="{{ ef.studio }}" onInput="{{ efH.studio }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+      </div>
+      <div style="margin-bottom:8px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">เรท (MPAA)</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.mpaa }}" as="o" hint-placeholder-count="5"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px">
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">Aspect หลัก</label><input value="{{ ef.aspect }}" onInput="{{ efH.aspect }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">Aspect รอง</label><input value="{{ ef.aspect2 }}" onInput="{{ efH.aspect2 }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+      </div>
+      <div style="margin-bottom:6px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">โหมดสี</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.color }}" as="o" hint-placeholder-count="3"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+      <div style="margin-bottom:6px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">แนวหนัง</label><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ efm.g }}" as="o" hint-placeholder-count="6"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">🎭 ทีมงานสร้าง</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px">
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ผู้กำกับ</label><input value="{{ ef.dir }}" onInput="{{ efH.dir }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">เขียนบท</label><input value="{{ ef.wr }}" onInput="{{ efH.wr }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">กำกับภาพ</label><input value="{{ ef.dop }}" onInput="{{ efH.dop }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ลำดับภาพ</label><input value="{{ ef.ed }}" onInput="{{ efH.ed }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ดนตรีประกอบ</label><input value="{{ ef.mus }}" onInput="{{ efH.mus }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">นักแสดงนำ</label><input value="{{ ef.cast }}" onInput="{{ efH.cast }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">⭐ คะแนน &amp; โหวต</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">IMDb</label><input value="{{ ef.imdb }}" onInput="{{ efH.imdb }}" inputmode="decimal" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">RT %</label><input value="{{ ef.rt }}" onInput="{{ efH.rt }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">Metacritic</label><input value="{{ ef.mc }}" onInput="{{ efH.mc }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">โหวต IMDb</label><input value="{{ ef.imdbVotes }}" onInput="{{ efH.imdbVotes }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">RT รีวิว</label><input value="{{ ef.rtCount }}" onInput="{{ efH.rtCount }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">Meta รีวิว</label><input value="{{ ef.metaCount }}" onInput="{{ efH.metaCount }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">🏆 ออสการ์ &amp; รางวัล</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px">
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ชนะ (รางวัล)</label><input value="{{ ef.ow }}" onInput="{{ efH.ow }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">เข้าชิง</label><input value="{{ ef.on }}" onInput="{{ efH.on }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div style="grid-column:1/3"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">รางวัลที่ได้</label><input value="{{ ef.aw }}" onInput="{{ efH.aw }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">💰 Box Office (ล้าน $)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ทุนสร้าง</label><input value="{{ ef.budM }}" onInput="{{ efH.budM }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ทั่วโลก</label><input value="{{ ef.wwM }}" onInput="{{ efH.wwM }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ในประเทศ</label><input value="{{ ef.domM }}" onInput="{{ efH.domM }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">🎞️ คุณภาพ &amp; ไฟล์</div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:8px">
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ความละเอียด</label><div style="display:flex;gap:7px"><sc-for list="{{ efm.res }}" as="o" hint-placeholder-count="2"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+        <div style="flex:1;min-width:140px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ขนาดไฟล์ (GB)</label><input value="{{ ef.gb }}" onInput="{{ efH.gb }}" inputmode="decimal" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+      </div>
+      <div style="margin-bottom:6px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ภาพ / HDR</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.hdr }}" as="o" hint-placeholder-count="3"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">🔊 เสียง &amp; ซับ</div>
+      <div style="margin-bottom:8px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">เสียง</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.audio }}" as="o" hint-placeholder-count="4"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+      <div style="margin-bottom:8px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">เสียง Eng</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.audioEng }}" as="o" hint-placeholder-count="5"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+      <div style="margin-bottom:8px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ซับ Eng</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.subEng }}" as="o" hint-placeholder-count="6"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+      <div style="margin-bottom:6px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ภาษาไทย</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.thai }}" as="o" hint-placeholder-count="3"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">🎁 iTunes Extra</div>
+      <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-bottom:6px">
+        <button onClick="{{ toggleEfExtra }}" style="{{ efm.exStyle }}">{{ efm.exLabel }}</button>
+        <div style="flex:1;min-width:160px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">Extra มีซับ</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.extraSub }}" as="o" hint-placeholder-count="4"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">🛒 การซื้อ</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">วันที่ซื้อ</label><input value="{{ ef.buyDate }}" onInput="{{ efH.buyDate }}" placeholder="YYYY-MM-DD" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">เวลา (24h)</label><input value="{{ ef.buyTime }}" onInput="{{ efH.buyTime }}" placeholder="HH:MM" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ราคา (฿)</label><input value="{{ ef.price }}" onInput="{{ efH.price }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">📺 สถานะของฉัน</div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">คะแนนของฉัน</label><div style="display:flex;gap:2px;font-size:24px"><sc-for list="{{ efStars }}" as="s" hint-placeholder-count="5"><span onClick="{{ s.set }}" style="color:{{ s.c }};cursor:pointer">★</span></sc-for></div></div>
+        <button onClick="{{ toggleEfWd }}" style="{{ efm.wdStyle }}">{{ efm.wdLabel }}</button>
+        <button onClick="{{ toggleEfTh2 }}" style="{{ efm.th2Style }}">{{ efm.th2Label }}</button>
+      </div>
+      <sc-if value="{{ hasCustom }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;border-top:1px dashed var(--line,#ece5d9);padding-top:16px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">✎ คอลัมน์กำหนดเอง</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ efCustom }}" as="f" hint-placeholder-count="2">
+              <div>
+                <label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">{{ f.name }}</label>
+                <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}"><input value="{{ f.val }}" onInput="{{ f.on }}" style="{{ f.efInput }}" style-focus="border-color:var(--accent,#889a76)"></sc-if>
+                <sc-if value="{{ f.isSingle }}" hint-placeholder-val="{{ false }}"><select value="{{ f.val }}" onChange="{{ f.on }}" style="{{ f.efInput }}cursor:pointer"><sc-for list="{{ f.options }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></sc-if>
+                <sc-if value="{{ f.isMulti }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="3"><span onClick="{{ o.toggle }}" style="{{ o.chip }}">{{ o.label }}</span></sc-for></div></sc-if>
+                <sc-if value="{{ f.isCheck }}" hint-placeholder-val="{{ false }}"><button onClick="{{ f.toggle }}" style="{{ f.btnStyle }}">{{ f.btnLabel }}</button></sc-if>
+                <sc-if value="{{ f.isStar }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:2px;font-size:22px"><sc-for list="{{ f.stars }}" as="s" hint-placeholder-count="5"><span onClick="{{ s.set }}" style="color:{{ s.c }};cursor:pointer">★</span></sc-for></div></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="padding:16px 24px;background:var(--bg,#f5f1ea);display:flex;gap:10px;justify-content:flex-end">
+      <button onClick="{{ closeModal }}" style="height:42px;padding:0 18px;border-radius:11px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);font-weight:600;font-size:13.5px;color:var(--ink,#3a352f)" style-hover="background:var(--bg,#f5f1ea)">ยกเลิก</button>
+      <button onClick="{{ saveEdit }}" style="height:42px;padding:0 22px;border-radius:11px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:13.5px;box-shadow:0 3px 10px rgba(95,112,80,.25)" style-hover="filter:brightness(1.07)">บันทึกการแก้ไข</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- ===================== MULTI-SELECT MODAL ===================== -->
+<sc-if value="{{ showMsel }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(40,34,28,.42);backdrop-filter:blur(3px);z-index:62;display:flex;align-items:center;justify-content:center">
+  <div onClick="{{ stop }}" style="width:420px;max-width:92vw;background:var(--surface,#fffdf9);border-radius:18px;box-shadow:0 24px 60px -16px rgba(0,0,0,.45);overflow:hidden;animation:pop .3s ease both">
+    <div style="padding:18px 22px;border-bottom:1px solid var(--line,#ece5d9);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:16px;font-weight:700">เลือกได้หลายตัวเลือก · {{ mselName }}</div>
+      <button onClick="{{ closeModal }}" style="width:30px;height:30px;border-radius:9px;color:var(--muted,#9c9286);font-size:16px" style-hover="background:var(--bg,#f5f1ea)">✕</button>
+    </div>
+    <div style="padding:20px 22px;display:flex;gap:8px;flex-wrap:wrap">
+      <sc-for list="{{ mselOptions }}" as="o" hint-placeholder-count="4"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for>
+    </div>
+    <div style="padding:14px 22px;background:var(--bg,#f5f1ea);display:flex;gap:10px;justify-content:flex-end">
+      <button onClick="{{ closeModal }}" style="height:40px;padding:0 16px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);font-weight:600;font-size:13px;color:var(--ink,#3a352f)">ยกเลิก</button>
+      <button onClick="{{ saveMsel }}" style="height:40px;padding:0 20px;border-radius:10px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:13px">บันทึก</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- ===================== COLUMNS MODAL ===================== -->
+<sc-if value="{{ showCols }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(40,34,28,.42);backdrop-filter:blur(3px);z-index:58;display:flex;align-items:center;justify-content:center">
+  <div onClick="{{ stop }}" style="width:460px;max-width:92vw;background:var(--surface,#fffdf9);border-radius:18px;box-shadow:0 24px 60px -16px rgba(0,0,0,.45);overflow:hidden;animation:pop .3s ease both">
+    <div style="padding:18px 22px;border-bottom:1px solid var(--line,#ece5d9);display:flex;align-items:center;justify-content:space-between">
+      <div><div style="font-size:16px;font-weight:700">⊗ จัดการคอลัมน์</div><div style="font-size:12px;color:var(--muted,#9c9286)">กดเพื่อซ่อน/แสดงกลุ่มคอลัมน์</div></div>
+      <button onClick="{{ closeModal }}" style="width:30px;height:30px;border-radius:9px;color:var(--muted,#9c9286);font-size:16px" style-hover="background:var(--bg,#f5f1ea)">✕</button>
+    </div>
+    <div style="padding:20px 22px;display:flex;gap:9px;flex-wrap:wrap">
+      <sc-for list="{{ groupToggles }}" as="g" hint-placeholder-count="7"><span onClick="{{ g.toggle }}" style="{{ g.style }}">{{ g.mark }}{{ g.label }}</span></sc-for>
+    </div>
+    <div style="padding:14px 22px;background:var(--bg,#f5f1ea);display:flex;gap:10px;justify-content:flex-end">
+      <button onClick="{{ showAllGroups }}" style="height:40px;padding:0 16px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);font-weight:600;font-size:13px;color:var(--ink,#3a352f)">แสดงทั้งหมด</button>
+      <button onClick="{{ closeModal }}" style="height:40px;padding:0 20px;border-radius:10px;background:var(--accent2,#5f7050);color:#fff;font-weight:600;font-size:13px">เสร็จ</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- hover poster preview (compact rows) -->
+<sc-if value="{{ hoverPop.show }}" hint-placeholder-val="{{ false }}">
+  <div style="{{ hoverPopStyle }}">
+    <span style="position:absolute;font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.92);font-size:40px;font-weight:500">{{ hoverPop.initial }}</span>
+    <sc-if value="{{ hoverPop.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ hoverPop.img }}" style="width:100%;height:100%;object-fit:cover;position:relative" /></sc-if>
+  </div>
+</sc-if>
+
+<!-- toast -->
+<sc-if value="{{ showToast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--ink,#3a352f);color:#fff;padding:13px 22px;border-radius:12px;font-size:13.5px;font-weight:600;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:fadeUp .3s ease both">{{ toastMsg }}</div>
+</sc-if>
+
+</div>
+</div>

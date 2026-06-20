@@ -1,0 +1,20 @@
+# ===== ไฟล์ระบบปฏิบัติการ =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== โปรแกรมแก้โค้ด =====
+.vscode/
+.idea/
+
+# ===== ความลับ / ค่าตั้งระบบ (เผื่ออนาคตตอนเชื่อม Supabase) =====
+.env
+.env.*
+*.local
+secrets.*
+
+# ===== ไฟล์ชั่วคราว / log =====
+*.log
+*.tmp
+_*.txt
+node_modules/
