@@ -1,5 +1,5 @@
 /* ===== เวอร์ชัน + วันที่เผยแพร่ (แก้ที่นี่ที่เดียวเวลาออกเวอร์ชันใหม่) ===== */
-const APP_VERSION = '0.9';
+const APP_VERSION = '0.9.1.0';
 const BUILD_DATE = '20 มิ.ย. 2569';
 
 class App extends React.Component {
@@ -14,6 +14,7 @@ class App extends React.Component {
     refreshing: false,
     toast: '',
     addQuery: '',
+    addResults: [],
     addSel: null,
     addFetching: false,
     addReady: false,
@@ -31,6 +32,11 @@ class App extends React.Component {
     msel: [],
     manualRes: '4K',
     manualStars: 4,
+    manualGb: '',
+    manualPrice: '',
+    manualTh: '',
+    manualWd: false,
+    manualPd: '',
     group: null,
     editForm: null,
     edit: {id:null, field:null, val:''},
@@ -61,6 +67,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+    // 1) โหลดจากเครื่องก่อน (เร็ว เห็นทันที แม้เน็ตหลุด)
     let saved=null;
     try { saved=JSON.parse(localStorage.getItem('mc_lib_v2')); } catch(e) {}
     if(saved && Array.isArray(saved.movies) && saved.movies.length){
@@ -68,10 +75,32 @@ class App extends React.Component {
     } else {
       this.setState({ movies: this.seed().map(m=>this.enrich(m)) });
     }
+    // 2) แล้วค่อย sync กับคลาวด์
+    this._syncFromCloud();
+  }
+  // รวมสถานะคลังเป็นก้อนเดียว (ใช้ทั้งเก็บในเครื่อง + คลาวด์)
+  _blob() {
+    return { movies:this.state.movies, customCols:this.state.customCols, cvals:this.state.cvals, zoom:this.state.zoom, hiddenGroups:this.state.hiddenGroups, crewOpen:this.state.crewOpen };
+  }
+  _syncFromCloud() {
+    if(!(window.MovieCloud && window.MovieCloud.ready)){ this._cloudReady=true; return; }
+    window.MovieCloud.load().then((cloud)=>{
+      if(cloud && Array.isArray(cloud.movies) && cloud.movies.length){
+        // คลาวด์มีข้อมูล → ใช้ของคลาวด์ (sync ข้ามเครื่อง)
+        this.setState({ movies:cloud.movies, customCols:cloud.customCols||[], cvals:cloud.cvals||{}, zoom:(cloud.zoom==null?0:cloud.zoom), hiddenGroups:cloud.hiddenGroups||[], crewOpen:(cloud.crewOpen==null?true:cloud.crewOpen) }, ()=>{ this._cloudReady=true; });
+      } else {
+        // คลาวด์ยังว่าง → ดันสถานะปัจจุบันขึ้นไปตั้งต้น
+        this._cloudReady=true;
+        if(this.state.movies) window.MovieCloud.save(this._blob());
+      }
+    }).catch(()=>{ this._cloudReady=true; });
   }
   componentDidUpdate() {
     if(!this.state.movies) return;
-    try { localStorage.setItem('mc_lib_v2', JSON.stringify({ movies:this.state.movies, customCols:this.state.customCols, cvals:this.state.cvals, zoom:this.state.zoom, hiddenGroups:this.state.hiddenGroups, crewOpen:this.state.crewOpen })); } catch(e) {}
+    const blob = this._blob();
+    try { localStorage.setItem('mc_lib_v2', JSON.stringify(blob)); } catch(e) {}
+    // ดันขึ้นคลาวด์ (เฉพาะหลัง sync รอบแรกเสร็จ กันเขียนทับข้อมูลคลาวด์ตอนเพิ่งเปิด)
+    if(this._cloudReady && window.MovieCloud && window.MovieCloud.ready){ window.MovieCloud.save(blob); }
   }
   resetLibrary() {
     if(!confirm('รีเซ็ตข้อมูลทั้งหมดกลับเป็นค่าตัวอย่าง? ข้อมูลที่แก้ไว้จะหายทั้งหมด')) return;
@@ -177,7 +206,35 @@ class App extends React.Component {
   editGb(id){ const m=this.state.movies.find(x=>x.id===id); const v=prompt('แก้ขนาดไฟล์ (GB) ของ '+m.t, m.gb); if(v!==null&&!isNaN(parseFloat(v))) this.setState(s=>({movies:s.movies.map(x=>x.id===id?{...x,gb:parseFloat(v)}:x)})); }
   open(id){ this.setState({selected:id}); }
   close(){ this.setState({selected:null, refreshing:false}); }
-  refresh(){ this.setState({refreshing:true}); setTimeout(()=>this.setState({refreshing:false, toast:'รีเฟรชข้อมูลจาก API แล้ว'}),1100); setTimeout(()=>this.setState({toast:''}),3000); }
+  refresh(){
+    const id=this.state.selected; const m=this.state.movies.find(x=>x.id===id);
+    if(!m) return;
+    if(!(window.MovieAPI && window.MovieAPI.ready)){ this.toast('ยังไม่ได้ตั้งค่า API'); return; }
+    this.setState({refreshing:true});
+    const apply=(full)=>{
+      if(!full){ this.setState({refreshing:false}); this.toast('ไม่พบหนังนี้ใน API'); return; }
+      this.setState(s=>({ refreshing:false, movies: s.movies.map(x=> x.id===id ? this.enrich(Object.assign({}, x, {
+        // อัปเดตเฉพาะข้อมูลจาก API — เก็บข้อมูลส่วนตัวไว้ (ดูแล้ว/คะแนนฉัน/ไฟล์/เสียง/ซับ/วันซื้อ/ราคา/ชื่อไทย)
+        p:full.p||x.p, y:full.y||x.y, g:(full.g&&full.g.length)?full.g:x.g, run:full.run||x.run,
+        mpaa:full.mpaa!=='—'?full.mpaa:x.mpaa, studio:full.studio!=='—'?full.studio:x.studio,
+        dir:full.dir!=='—'?full.dir:x.dir, wr:full.wr!=='—'?full.wr:x.wr, cast:full.cast!=='—'?full.cast:x.cast,
+        dop:full.dop!=='—'?full.dop:x.dop, ed:full.ed!=='—'?full.ed:x.ed, mus:full.mus!=='—'?full.mus:x.mus,
+        imdb:full.imdb||x.imdb, rt:full.rt||x.rt, mc:full.mc||x.mc, aw:full.aw!=='—'?full.aw:x.aw,
+        ow:full.ow||x.ow, on:full.on||x.on, bud:full.bud||x.bud, ww:full.ww||x.ww, dom:full.dom||x.dom,
+        syn:full.syn||x.syn, tmdbId:full.tmdbId||x.tmdbId, imdbId:full.imdbId||x.imdbId
+      })) : x) }));
+      this.toast('รีเฟรชข้อมูลจาก API แล้ว');
+    };
+    if(m.tmdbId){
+      window.MovieAPI.details({tmdbId:m.tmdbId, t:m.t, y:m.y}).then(apply).catch(()=>apply(null));
+    } else {
+      window.MovieAPI.search(m.t).then(res=>{
+        const match=res.find(r=>String(r.y)===String(m.y))||res[0];
+        if(!match){ apply(null); return; }
+        window.MovieAPI.details({tmdbId:match.tmdbId, t:match.t||m.t, y:match.y||m.y}).then(full=>apply(Object.assign({}, full, {tmdbId:match.tmdbId}))).catch(()=>apply(null));
+      }).catch(()=>apply(null));
+    }
+  }
   toast(msg){ this.setState({toast:msg}); setTimeout(()=>this.setState({toast:''}),2600); }
   sort(k){ this.setState(s=>({sortKey:k, sortDir: s.sortKey===k&&s.sortDir==='desc'?'asc':'desc'})); }
   sval(m,k){ if(k==='t')return (m.t||'').toLowerCase(); if(k==='genre')return ((m.g||[])[0]||'').toLowerCase(); if(k==='intl')return m.ww-m.dom; if(k==='pctDom')return m.dom/m.ww; const v=m[k]; return typeof v==='string'?v.toLowerCase():v; }
@@ -206,20 +263,53 @@ class App extends React.Component {
   onPeopleSearch(v){ this.setState({peopleSearch:v}); }
 
   // add flow
-  onAddQuery(e){ this.setState({addQuery:e.target.value}); }
-  pickAdd(p){ this.setState({addSel:p, addFetching:true, addReady:false}); setTimeout(()=>this.setState({addFetching:false, addReady:true}),1500); }
+  onAddQuery(e){
+    const q=e.target.value;
+    this.setState({addQuery:q});
+    if(window.MovieAPI && window.MovieAPI.ready){
+      clearTimeout(this._searchTimer);
+      this._searchTimer=setTimeout(()=>{
+        const cur=q.trim();
+        if(!cur){ this.setState({addResults:[]}); return; }
+        window.MovieAPI.search(cur).then(res=>{
+          if(this.state.addQuery.trim()===cur) this.setState({addResults:res}); // ใช้เฉพาะผลของคำค้นล่าสุด
+        });
+      }, 350);
+    }
+  }
+  pickAdd(p){
+    this.setState({addSel:p, addFetching:true, addReady:false});
+    if(window.MovieAPI && window.MovieAPI.ready && p.tmdbId){
+      window.MovieAPI.details(p).then(full=>{
+        const sel=Object.assign({}, full, {
+          tmdbId:p.tmdbId,
+          genre:(full.g||[]).join(', '),    // alias ให้ UI เดิมใช้ได้
+          runtime:full.run,
+          img: full.p ? (this.IMGBASE+full.p) : (p.img||''),
+          grad: this.grad(['#5f7050','#c8c0b0'])
+        });
+        this.setState({addSel:sel, addFetching:false, addReady:true});
+      }).catch(()=>{ this.setState({addFetching:false, addReady:true}); });
+    } else {
+      setTimeout(()=>this.setState({addFetching:false, addReady:true}),1200); // fallback (POOL)
+    }
+  }
   addCancel(){ this.setState({addSel:null, addFetching:false, addReady:false}); }
   addSave(){
     const p=this.state.addSel; if(!p) return;
     const newId=Math.max(0,...this.state.movies.map(x=>x.id))+1;
     const today=new Date().toISOString().slice(0,10);
-    const mv=this.enrich({id:newId, p:p.p||'', t:p.t, th:p.t, y:p.y, g:(p.genre||'').split(',').map(s=>s.trim()).filter(Boolean),
-      run:p.runtime, mpaa:p.mpaa, studio:p.studio, dir:p.dir, wr:'—', cast:'—', dop:'—', ed:'—', mus:'—',
-      imdb:p.imdb, rt:p.rt, mc:p.mc, aw:'—', ow:0, on:0, bud:0, ww:0, dom:0, wd:false, th2:false,
-      mine:this.state.manualStars, re:[this.state.manualRes], gb:0, au:['5.1'], su:['Eng','Thai'],
-      ex:false, ar:'2.39:1', co:'สี', di:this.state.manualRes==='HD'?'2K':'4K', pd:today, price:0,
-      syn:'—', c:['#5f7050','#c8c0b0']});
-    this.setState(s=>({ movies:[mv, ...s.movies], addSel:null, addReady:false, addQuery:'', view:'table' }));
+    const mv=this.enrich({id:newId, p:p.p||'', t:p.t, th:(this.state.manualTh.trim()||p.th||p.t), y:p.y,
+      g: p.g || (p.genre||'').split(',').map(s=>s.trim()).filter(Boolean),
+      run:(p.run!=null?p.run:p.runtime)||0, mpaa:p.mpaa||'—', studio:p.studio||'—',
+      dir:p.dir||'—', wr:p.wr||'—', cast:p.cast||'—', dop:p.dop||'—', ed:p.ed||'—', mus:p.mus||'—',
+      imdb:p.imdb||0, rt:p.rt||0, mc:p.mc||0, aw:p.aw||'—', ow:p.ow||0, on:p.on||0,
+      bud:p.bud||0, ww:p.ww||0, dom:p.dom||0, wd:this.state.manualWd, th2:false,
+      mine:this.state.manualStars, re:[this.state.manualRes], gb:parseFloat(this.state.manualGb)||0, au:['5.1'], su:['Eng','Thai'],
+      ex:false, ar:'2.39:1', co:'สี', di:this.state.manualRes==='HD'?'2K':'4K', pd:(this.state.manualPd||today), price:parseInt(this.state.manualPrice,10)||0,
+      syn:p.syn||'—', tmdbId:p.tmdbId||null, imdbId:p.imdbId||'', c:['#5f7050','#c8c0b0']});
+    this.setState(s=>({ movies:[mv, ...s.movies], addSel:null, addReady:false, addQuery:'', addResults:[],
+      manualGb:'', manualPrice:'', manualTh:'', manualWd:false, manualPd:'', view:'table' }));
     this.toast('เพิ่ม “'+p.t+'” ลงคอลเลกชันแล้ว');
   }
   setManualRes(r){ this.setState({manualRes:r}); }
@@ -554,7 +644,9 @@ class App extends React.Component {
 
     // add results
     const aq=this.state.addQuery.trim().toLowerCase();
-    const addResults=this.POOL.filter(p=>!aq||p.t.toLowerCase().includes(aq)).map(p=>({...p, img:p.p?(this.IMGBASE+p.p):'', hasImg:!!p.p, imgErr:(e)=>this.hideImg(e), pick:()=>this.pickAdd(p)}));
+    const apiOn = !!(window.MovieAPI && window.MovieAPI.ready);
+    const rawResults = apiOn ? (this.state.addResults||[]) : this.POOL.filter(p=>!aq||p.t.toLowerCase().includes(aq));
+    const addResults=rawResults.map(p=>({...p, img:(p.img||(p.p?(this.IMGBASE+p.p):'')), hasImg:(p.hasImg!=null?p.hasImg:!!p.p), imgErr:(e)=>this.hideImg(e), pick:()=>this.pickAdd(p)}));
     const asel=this.state.addSel;
     const addAutoFields = asel?[
       {k:'ปี',v:asel.y},{k:'แนว',v:asel.genre},{k:'ความยาว',v:asel.runtime+' นาที'},
@@ -699,6 +791,14 @@ class App extends React.Component {
         {label:'Dolby Vision', set:()=>this.setManualRes('Dolby Vision'), style:this.resChip('Dolby Vision',t)},
       ],
       manualStarArr:[1,2,3,4,5].map(i=>({set:()=>this.setManualStars(i), c:i<=this.state.manualStars?t.gold:t.line})),
+      // add-form: ช่องกรอกเอง (ข้อมูลส่วนตัวที่ API ไม่มี)
+      manualGb:this.state.manualGb, onManualGb:(e)=>this.setState({manualGb:e.target.value}),
+      manualPrice:this.state.manualPrice, onManualPrice:(e)=>this.setState({manualPrice:e.target.value}),
+      manualTh:this.state.manualTh, onManualTh:(e)=>this.setState({manualTh:e.target.value}),
+      manualPd:this.state.manualPd, onManualPd:(e)=>this.setState({manualPd:e.target.value}),
+      manualWd:this.state.manualWd, toggleManualWd:()=>this.setState(s=>({manualWd:!s.manualWd})),
+      manualWdLabel:this.state.manualWd?'✓ ดูแล้ว':'ยังไม่ได้ดู',
+      manualWdStyle:'height:40px;padding:0 16px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;width:100%;border:1px solid '+(this.state.manualWd?'transparent':t.line)+';'+(this.state.manualWd?('background:'+t.accent2+';color:#fff;'):('background:'+t.bg+';color:'+t.muted+';')),
       // table
       rows, rowCount:list.length, thBase, thBaseR, thBaseCalc, thBaseCalcR, tdC, tdCR, tdL, tdLR, tdCalc, tdCalcR,
       sorters, arrows,

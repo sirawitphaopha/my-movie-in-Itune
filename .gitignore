@@ -7,11 +7,12 @@ desktop.ini
 .vscode/
 .idea/
 
-# ===== ความลับ / ค่าตั้งระบบ (เผื่ออนาคตตอนเชื่อม Supabase) =====
+# ===== ความลับ / ค่าตั้งระบบ =====
 .env
 .env.*
 *.local
 secrets.*
+config.js
 
 # ===== ไฟล์ชั่วคราว / log =====
 *.log

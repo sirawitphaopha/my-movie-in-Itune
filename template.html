@@ -543,10 +543,16 @@
                 </div>
               </sc-for>
             </div>
-            <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">กรอกเอง</div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">กรอกเอง · ข้อมูลของฉัน</div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ชื่อไทย</label>
+              <input value="{{ manualTh }}" onInput="{{ onManualTh }}" placeholder="ใส่ชื่อไทย ถ้ามี (เว้นว่างได้)" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)">
+            </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
-              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ขนาดไฟล์ (GB)</label><input placeholder="เช่น 42.5" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
-              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ราคาที่ซื้อ (฿)</label><input placeholder="เช่น 599" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ขนาดไฟล์ (GB)</label><input value="{{ manualGb }}" onInput="{{ onManualGb }}" inputmode="decimal" placeholder="เช่น 42.5" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ราคาที่ซื้อ (฿)</label><input value="{{ manualPrice }}" onInput="{{ onManualPrice }}" inputmode="numeric" placeholder="เช่น 599" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">วันที่ซื้อ</label><input type="date" value="{{ manualPd }}" onInput="{{ onManualPd }}" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ดูแล้วหรือยัง</label><button onClick="{{ toggleManualWd }}" style="{{ manualWdStyle }}">{{ manualWdLabel }}</button></div>
               <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ความละเอียด</label>
                 <div style="display:flex;gap:6px;flex-wrap:wrap">
                   <sc-for list="{{ manualResBtns }}" as="b" hint-placeholder-count="3"><span onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</span></sc-for>
