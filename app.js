@@ -1,5 +1,5 @@
 /* ===== เวอร์ชัน + วันที่เผยแพร่ (แก้ที่นี่ที่เดียวเวลาออกเวอร์ชันใหม่) ===== */
-const APP_VERSION = '0.9.1.0';
+const APP_VERSION = '0.9.2.0';
 const BUILD_DATE = '20 มิ.ย. 2569';
 
 class App extends React.Component {

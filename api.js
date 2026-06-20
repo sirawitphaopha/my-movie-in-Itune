@@ -1,20 +1,36 @@
 /* api.js — ตัวเชื่อมข้อมูลหนังจริง (TMDb สำหรับค้นหา+โปสเตอร์ · OMDb สำหรับคะแนน)
  * คืนข้อมูลตาม data model ของแอป (ช่องเดียวกับที่ตาราง/การ์ดใช้)
+ *
+ * โหมดกุญแจ (สลับอัตโนมัติ):
+ *  - ในเครื่อง (local): มี config.js → เรียก TMDb/OMDb ตรง ใส่กุญแจใน URL
+ *  - บนเน็ต (online): ไม่มี config.js → เรียกผ่าน "ตัวกลาง" /api/tmdb, /api/omdb
+ *    (Cloudflare Pages Functions เก็บกุญแจเป็น env var ฝั่งเซิร์ฟเวอร์ — กุญแจไม่หลุดมากับหน้าเว็บ)
  */
 (function (global) {
   'use strict';
   var cfg = global.MOVIE_CONFIG || {};
   var TMDB = cfg.TMDB_KEY || '';
   var OMDB = cfg.OMDB_KEY || '';
+  var USE_PROXY = !TMDB;            // ไม่มีกุญแจในเครื่อง = อยู่บนเน็ต = เรียกผ่านตัวกลาง
   var TMDB_BASE = 'https://api.themoviedb.org/3';
   var IMG = 'https://image.tmdb.org/t/p/w500';
 
   // TMDb ใช้ชื่อแนวบางอันไม่ตรงกับแอป → แปลงให้ตรง
   var GENRE_MAP = { 'Science Fiction': 'Sci-Fi' };
 
+  // สร้าง URL ของ TMDb — สลับระหว่างเรียกตรง (local) กับผ่านตัวกลาง (online)
+  function tmdbURL(path, params) {
+    if (USE_PROXY) return '/api/tmdb' + path + (params ? ('?' + params) : '');
+    return TMDB_BASE + path + '?api_key=' + TMDB + (params ? ('&' + params) : '');
+  }
+  // สร้าง URL ของ OMDb เช่นกัน (params = query string ที่ยังไม่รวมกุญแจ)
+  function omdbURL(params) {
+    if (USE_PROXY) return '/api/omdb?' + params;
+    return 'https://www.omdbapi.com/?apikey=' + OMDB + '&' + params;
+  }
+
   function tmdb(path, params) {
-    var url = TMDB_BASE + path + '?api_key=' + TMDB + (params ? ('&' + params) : '');
-    return fetch(url).then(function (r) { return r.json(); });
+    return fetch(tmdbURL(path, params)).then(function (r) { return r.json(); });
   }
 
   function crewBy(crew, jobs) {
@@ -27,7 +43,7 @@
 
   /* ค้นหาหนัง → คืนผลลัพธ์แบบย่อ (ไว้โชว์ในหน้าเพิ่มหนัง) */
   function search(query) {
-    if (!query || !TMDB) return Promise.resolve([]);
+    if (!query) return Promise.resolve([]);
     return tmdb('/search/movie', 'include_adult=false&query=' + encodeURIComponent(query))
       .then(function (j) {
         return (j.results || []).slice(0, 12).map(function (m) {
@@ -50,8 +66,8 @@
   function details(result) {
     if (typeof result === 'number' || typeof result === 'string') result = { tmdbId: result };
     var tmdbP = tmdb('/movie/' + result.tmdbId, 'append_to_response=credits,release_dates,external_ids');
-    var omdbP = (OMDB && result.t)
-      ? fetch('https://www.omdbapi.com/?apikey=' + OMDB + '&t=' + encodeURIComponent(result.t) + (result.y ? ('&y=' + result.y) : ''))
+    var omdbP = result.t
+      ? fetch(omdbURL('t=' + encodeURIComponent(result.t) + (result.y ? ('&y=' + result.y) : '')))
           .then(function (r) { return r.json(); }).catch(function () { return null; })
       : Promise.resolve(null);
 
@@ -117,5 +133,6 @@
       });
   }
 
-  global.MovieAPI = { ready: !!TMDB, search: search, details: details, IMG: IMG };
+  // พร้อมใช้เสมอ: local มีกุญแจ / online มีตัวกลาง (proxy)
+  global.MovieAPI = { ready: true, search: search, details: details, IMG: IMG };
 })(window);
