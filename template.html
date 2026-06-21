@@ -192,10 +192,10 @@
               <th colspan="1" style="position:sticky;top:0;z-index:4;background:#efe4ea;color:#8a5d76;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">📺 สถานะของฉัน</th>
               <th colspan="2" style="position:sticky;top:0;z-index:4;background:#e5e9ee;color:#566378;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">💾 ไฟล์ที่ซื้อ</th>
               <sc-if value="{{ showOscar }}" hint-placeholder-val="{{ true }}"><th colspan="3" style="position:sticky;top:0;z-index:4;background:#f6ecd6;color:#9a7b2f;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🏆 ออสการ์</th></sc-if>
-              <sc-if value="{{ showQuality }}" hint-placeholder-val="{{ true }}"><th colspan="4" style="position:sticky;top:0;z-index:4;background:#e2eeeb;color:#2f7d6e;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🎞️ คุณภาพภาพ</th></sc-if>
+              <sc-if value="{{ showQuality }}" hint-placeholder-val="{{ true }}"><th colspan="5" style="position:sticky;top:0;z-index:4;background:#e2eeeb;color:#2f7d6e;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🎞️ คุณภาพภาพ</th></sc-if>
               <sc-if value="{{ showAudio }}" hint-placeholder-val="{{ true }}"><th colspan="4" style="position:sticky;top:0;z-index:4;background:#e9e6f2;color:#6d5d86;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🔊 เสียง &amp; ซับ</th></sc-if>
-              <sc-if value="{{ showItunes }}" hint-placeholder-val="{{ true }}"><th colspan="2" style="position:sticky;top:0;z-index:4;background:#ede6dd;color:#7a6248;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🎁 iTunes Extra</th></sc-if>
-              <sc-if value="{{ showPurchase }}" hint-placeholder-val="{{ true }}"><th colspan="3" style="position:sticky;top:0;z-index:4;background:#f3e6e6;color:#8a5d5d;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🛒 การซื้อ</th></sc-if>
+              <sc-if value="{{ showItunes }}" hint-placeholder-val="{{ true }}"><th colspan="4" style="position:sticky;top:0;z-index:4;background:#ede6dd;color:#7a6248;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🎁 iTunes Extra</th></sc-if>
+              <sc-if value="{{ showPurchase }}" hint-placeholder-val="{{ true }}"><th colspan="4" style="position:sticky;top:0;z-index:4;background:#f3e6e6;color:#8a5d5d;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9);border-right:2px solid var(--line,#ece5d9)">🛒 การซื้อ</th></sc-if>
               <sc-if value="{{ hasCustom }}" hint-placeholder-val="{{ false }}">
               <th colspan="{{ customColsCount }}" style="position:sticky;top:0;z-index:4;background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050);font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,#ece5d9)">✎ กำหนดเอง</th>
               </sc-if>
@@ -229,18 +229,22 @@
               <th onClick="{{ sorters.on }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">เข้าชิง{{ arrows.on }}</th>
               <th style="{{ thBaseR }}">รางวัล</th></sc-if>
               <sc-if value="{{ showQuality }}" hint-placeholder-val="{{ true }}"><th style="{{ thBase }}">ภาพ / HDR</th>
+              <th style="{{ thBase }}">DI</th>
               <th onClick="{{ sorters.color }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">สี{{ arrows.color }}</th>
               <th onClick="{{ sorters.aspect }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">Aspect{{ arrows.aspect }}</th>
               <th style="{{ thBaseR }}">Aspect รอง</th></sc-if>
-              <sc-if value="{{ showAudio }}" hint-placeholder-val="{{ true }}"><th style="{{ thBase }}">เสียง</th>
-              <th style="{{ thBase }}">เสียง Eng</th>
-              <th style="{{ thBase }}">ซับ Eng</th>
-              <th style="{{ thBaseR }}">ไทย</th></sc-if>
+              <sc-if value="{{ showAudio }}" hint-placeholder-val="{{ true }}"><th style="{{ thBase }}">เสียง อังกฤษ</th>
+              <th style="{{ thBase }}">ซับ อังกฤษ</th>
+              <th style="{{ thBase }}">เสียง ไทย</th>
+              <th style="{{ thBaseR }}">ซับ ไทย</th></sc-if>
               <sc-if value="{{ showItunes }}" hint-placeholder-val="{{ true }}"><th onClick="{{ sorters.hasExtra }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">มี Extra{{ arrows.hasExtra }}</th>
-              <th style="{{ thBaseR }}">Extra ซับ</th></sc-if>
+              <th style="{{ thBase }}">Extra ซับ</th>
+              <th style="{{ thBase }}">ความยาว iTunes</th>
+              <th style="{{ thBaseR }}">ลิงก์</th></sc-if>
               <sc-if value="{{ showPurchase }}" hint-placeholder-val="{{ true }}"><th onClick="{{ sorters.buyDate }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">วันที่ซื้อ{{ arrows.buyDate }}</th>
               <th onClick="{{ sorters.buyTime }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">เวลา (24h){{ arrows.buyTime }}</th>
-              <th onClick="{{ sorters.price }}" style="{{ thBaseR }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ราคา{{ arrows.price }}</th></sc-if>
+              <th onClick="{{ sorters.price }}" style="{{ thBase }}cursor:pointer" style-hover="color:var(--accent2,#5f7050)">ราคา{{ arrows.price }}</th>
+              <th style="{{ thBaseR }}">Order ID</th></sc-if>
               <sc-for list="{{ customCols }}" as="c" hint-placeholder-count="0">
                 <th style="{{ thBase }}white-space:nowrap"><span>{{ c.name }}</span> <span onClick="{{ c.del }}" style="cursor:pointer;color:#c97a6d;font-weight:700;padding:0 3px" title="ลบคอลัมน์">×</span></th>
               </sc-for>
@@ -344,27 +348,30 @@
                   <sc-if value="{{ m.eAw.off }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px;color:var(--ink,#3a352f)">{{ m.aw }}</span></sc-if>
                 </td></sc-if>
                 <sc-if value="{{ showQuality }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.openHdr }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.hdrTags }}" as="x" hint-placeholder-count="2"><span style="background:#efe7d4;border:1px solid #e0d2ad;color:#8a6d2f;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:700">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
+                <td onClick="{{ m.eDi.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eDi.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eDi.off }}" hint-placeholder-val="{{ true }}"><span style="background:#e2eeeb;border:1px solid #b5d8cf;color:#2f7d6e;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700">{{ m.di }}</span></sc-if>
+                </td>
                 <td onClick="{{ m.eColor.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
                   <sc-if value="{{ m.eColor.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
                   <sc-if value="{{ m.eColor.off }}" hint-placeholder-val="{{ true }}"><span style="background:var(--soft,#e7ecdf);color:var(--accent2,#5f7050);padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;white-space:nowrap">{{ m.color }}</span></sc-if>
                 </td>
-                <td onClick="{{ m.eAspect.start }}" style="{{ tdC }}cursor:cell" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
-                  <sc-if value="{{ m.eAspect.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
-                  <sc-if value="{{ m.eAspect.off }}" hint-placeholder-val="{{ true }}">{{ m.aspect }}</sc-if>
-                </td>
-                <td onClick="{{ m.eAspect2.start }}" style="{{ tdCR }}cursor:cell;font-size:11.5px;color:var(--muted,#9c9286)" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
-                  <sc-if value="{{ m.eAspect2.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
-                  <sc-if value="{{ m.eAspect2.off }}" hint-placeholder-val="{{ true }}">{{ m.aspect2 }}</sc-if>
-                </td></sc-if>
-                <sc-if value="{{ showAudio }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.openAudio }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.audioTags }}" as="x" hint-placeholder-count="2"><span style="background:#e9e6f2;border:1px solid #d6cfe6;color:#6d5d86;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:700">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
-                <td onClick="{{ m.openAudioEng }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.audioEngTags }}" as="x" hint-placeholder-count="3"><span style="background:var(--bg,#f5f1ea);border:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f);padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
-                <td onClick="{{ m.openSubEng }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.subEngTags }}" as="x" hint-placeholder-count="3"><span style="background:var(--bg,#f5f1ea);border:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f);padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
-                <td onClick="{{ m.openThai }}" style="{{ tdCR }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.thaiTags }}" as="x" hint-placeholder-count="2"><span style="background:#e8efe9;border:1px solid #cfe0d3;color:#3f7d52;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td></sc-if>
+                <td style="{{ tdC }}">{{ m.aspect }}</td>
+                <td style="{{ tdCR }}font-size:11.5px;color:var(--muted,#9c9286)">{{ m.aspect2 }}</td></sc-if>
+                <sc-if value="{{ showAudio }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.openAEng }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.aEngTags }}" as="x" hint-placeholder-count="2"><span style="background:#e9e6f2;border:1px solid #d6cfe6;color:#6d5d86;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:700">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
+                <td onClick="{{ m.openSEng }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.sEngTags }}" as="x" hint-placeholder-count="3"><span style="background:#e9e6f2;border:1px solid #d6cfe6;color:#6d5d86;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
+                <td onClick="{{ m.openATh }}" style="{{ tdC }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.aThTags }}" as="x" hint-placeholder-count="2"><span style="background:#e8efe9;border:1px solid #cfe0d3;color:#3f7d52;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td>
+                <td onClick="{{ m.openSTh }}" style="{{ tdCR }}cursor:pointer" style-hover="outline:1.5px solid var(--accent,#889a76);outline-offset:-2px"><div style="display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:center"><sc-for list="{{ m.sThTags }}" as="x" hint-placeholder-count="2"><span style="background:#e8efe9;border:1px solid #cfe0d3;color:#3f7d52;padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:600">{{ x }}</span></sc-for><span style="color:var(--muted,#9c9286);font-size:9px">▾</span></div></td></sc-if>
                 <sc-if value="{{ showItunes }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.toggleExtra }}" style="{{ tdC }}cursor:pointer" style-hover="background:var(--soft,#e7ecdf)"><span style="{{ m.extraChip }}">{{ m.extraIcon }}</span></td>
-                <td onClick="{{ m.eExtraSub.start }}" style="{{ tdCR }}cursor:cell;font-size:11.5px" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                <td onClick="{{ m.eExtraSub.start }}" style="{{ tdC }}cursor:cell;font-size:11.5px" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
                   <sc-if value="{{ m.eExtraSub.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
                   <sc-if value="{{ m.eExtraSub.off }}" hint-placeholder-val="{{ true }}">{{ m.extraSub }}</sc-if>
-                </td></sc-if>
+                </td>
+                <td onClick="{{ m.eDur.start }}" style="{{ tdC }}cursor:cell;font-variant-numeric:tabular-nums;font-size:11.5px" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eDur.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eDur.off }}" hint-placeholder-val="{{ true }}">{{ m.durLabel }}</sc-if>
+                </td>
+                <td onClick="{{ m.openIturl }}" style="{{ tdCR }}cursor:pointer" style-hover="background:var(--soft,#e7ecdf)"><span style="{{ m.iturlChip }}">{{ m.iturlIcon }}</span></td></sc-if>
                 <sc-if value="{{ showPurchase }}" hint-placeholder-val="{{ true }}"><td onClick="{{ m.eBuyDate.start }}" style="{{ tdC }}cursor:cell;font-variant-numeric:tabular-nums" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
                   <sc-if value="{{ m.eBuyDate.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
                   <sc-if value="{{ m.eBuyDate.off }}" hint-placeholder-val="{{ true }}">{{ m.buyDate }}</sc-if>
@@ -373,9 +380,13 @@
                   <sc-if value="{{ m.eBuyTime.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
                   <sc-if value="{{ m.eBuyTime.off }}" hint-placeholder-val="{{ true }}">{{ m.buyTime }}</sc-if>
                 </td>
-                <td onClick="{{ m.ePrice.start }}" style="{{ tdCR }}cursor:cell;font-weight:600" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                <td onClick="{{ m.ePrice.start }}" style="{{ tdC }}cursor:cell;font-weight:600" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
                   <sc-if value="{{ m.ePrice.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" inputmode="numeric" style="{{ inlineInputStyle }}" /></sc-if>
                   <sc-if value="{{ m.ePrice.off }}" hint-placeholder-val="{{ true }}">{{ m.priceLabel }}</sc-if>
+                </td>
+                <td onClick="{{ m.eOid.start }}" style="{{ tdCR }}cursor:cell;font-variant-numeric:tabular-nums;font-size:11.5px;color:var(--muted,#9c9286)" style-hover="background:var(--soft,#e7ecdf);outline:1.5px solid var(--accent,#889a76);outline-offset:-2px">
+                  <sc-if value="{{ m.eOid.on }}" hint-placeholder-val="{{ false }}"><input value="{{ editVal }}" onInput="{{ editChange }}" onKeyDown="{{ editKey }}" onBlur="{{ commitEdit }}" autoFocus="{{ true }}" style="{{ inlineInputStyle }}" /></sc-if>
+                  <sc-if value="{{ m.eOid.off }}" hint-placeholder-val="{{ true }}">{{ m.oidLabel }}</sc-if>
                 </td></sc-if>
                 <sc-for list="{{ m.customCells }}" as="cc" hint-placeholder-count="0">
                   <td style="text-align:center;padding:var(--rowpad,9px 12px);border-bottom:1px solid var(--line,#ece5d9);color:var(--ink,#3a352f)">
@@ -489,11 +500,11 @@
 
     <!-- ============ ADD MOVIE ============ -->
     <sc-if value="{{ isAdd }}" hint-placeholder-val="{{ false }}">
-    <div style="padding:32px 28px 60px;max-width:760px;margin:0 auto">
+    <div style="padding:28px 32px 60px;max-width:1240px;margin:0 auto">
       <div style="text-align:center;margin-bottom:6px;font-size:22px;font-weight:700;letter-spacing:-.4px">เพิ่มหนังใหม่</div>
       <div style="text-align:center;color:var(--muted,#9c9286);font-size:13.5px;margin-bottom:24px">ค้นหาชื่อหนัง แล้วระบบดึงโปสเตอร์ · คะแนน · ข้อมูลจาก TMDb &amp; OMDb อัตโนมัติ</div>
 
-      <div style="position:relative;margin-bottom:22px">
+      <div style="position:relative;margin-bottom:22px;max-width:680px;margin-left:auto;margin-right:auto">
         <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted,#9c9286);font-size:18px">⌕</span>
         <input value="{{ addQuery }}" onInput="{{ onAddQuery }}" placeholder="พิมพ์ชื่อหนัง เช่น Tenet, Coco…" style="width:100%;height:52px;border-radius:14px;border:1.5px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);padding:0 16px 0 46px;font-size:15px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76);box-shadow:0 0 0 4px var(--soft,#e7ecdf)">
       </div>
@@ -529,15 +540,15 @@
             <sc-if value="{{ addHasPosters }}" hint-placeholder-val="{{ false }}">
               <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:10px">เลือกโปสเตอร์ · แตะเพื่อเปลี่ยน</div>
               <div style="display:flex;gap:9px;overflow-x:auto;padding-bottom:8px;margin-bottom:18px">
-                <sc-for list="{{ addPosters }}" as="po" hint-placeholder-count="5"><div onClick="{{ po.pick }}" style="{{ po.wrapStyle }}"><img src="{{ po.thumb }}" onError="{{ po.imgErr }}" loading="lazy" style="width:100%;height:100%;object-fit:cover" /></div></sc-for>
+                <sc-for list="{{ addPosters }}" as="po" hint-placeholder-count="5"><div style="{{ po.wrapStyle }}"><img onClick="{{ po.pick }}" src="{{ po.thumb }}" onError="{{ po.imgErr }}" loading="lazy" style="width:100%;height:100%;object-fit:cover" /><span onClick="{{ po.zoom }}" style="position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:6px;background:rgba(20,16,12,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:zoom-in" title="ดูรูปใหญ่">🔍</span></div></sc-for>
               </div>
             </sc-if>
             <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">ดึงอัตโนมัติ</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;margin-bottom:22px">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px 26px;margin-bottom:22px">
               <sc-for list="{{ addAutoFields }}" as="f" hint-placeholder-count="6">
                 <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed var(--line,#ece5d9);padding-bottom:7px">
                   <span style="font-size:12.5px;color:var(--muted,#9c9286)">{{ f.k }}</span>
-                  <span style="font-size:13px;font-weight:600;text-align:right;max-width:62%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.v }} <span style="color:#5fa56f;font-size:11px">✓</span></span>
+                  <span style="font-size:13px;font-weight:600;text-align:right;max-width:62%;line-height:1.35;word-break:break-word">{{ f.v }} <span style="color:#5fa56f;font-size:11px">✓</span></span>
                 </div>
               </sc-for>
             </div>
@@ -546,7 +557,7 @@
               <label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ชื่อไทย</label>
               <input value="{{ manualTh }}" onInput="{{ onManualTh }}" placeholder="ใส่ชื่อไทย ถ้ามี (เว้นว่างได้)" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)">
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px 18px;margin-bottom:22px">
               <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ขนาดไฟล์ (GB)</label><input value="{{ manualGb }}" onInput="{{ onManualGb }}" inputmode="decimal" placeholder="เช่น 42.5" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
               <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ราคาที่ซื้อ (฿)</label><input value="{{ manualPrice }}" onInput="{{ onManualPrice }}" inputmode="numeric" placeholder="เช่น 599" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
               <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">วันที่ซื้อ</label><input type="date" value="{{ manualPd }}" onInput="{{ onManualPd }}" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
@@ -560,15 +571,43 @@
                   <sc-for list="{{ manualResBtns }}" as="b" hint-placeholder-count="3"><span onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</span></sc-for>
                 </div>
               </div>
-              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">DI · มาสเตอร์ภาพ (2K/4K)</label>
+              <sc-if value="{{ manualShow4k }}" hint-placeholder-val="{{ false }}">
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">HDR (เฉพาะ 4K)</label>
+                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <sc-for list="{{ manualHdrBtns }}" as="b" hint-placeholder-count="2"><span onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</span></sc-for>
+                </div>
+              </div>
+              </sc-if>
+              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">DI · Digital Intermediate</label>
                 <div style="display:flex;gap:6px;flex-wrap:wrap">
                   <sc-for list="{{ manualDiBtns }}" as="b" hint-placeholder-count="2"><span onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</span></sc-for>
                 </div>
               </div>
-              <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">อัตราส่วนภาพ (Aspect)</label><input value="{{ manualAspect }}" onInput="{{ onManualAspect }}" placeholder="เช่น 2.39:1, 1.85:1" style="width:100%;height:40px;border-radius:10px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13.5px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)"></div>
+              <div style="grid-column:1/4"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">อัตราส่วนภาพ · เลือกได้หลายอัน</label>
+                <sc-for list="{{ manualAspectRows }}" as="row" hint-placeholder-count="1">
+                  <div style="display:flex;gap:8px;align-items:center;margin-bottom:7px">
+                    <select value="{{ row.ratio }}" onChange="{{ row.onR }}" style="height:38px;border-radius:9px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);padding:0 10px;font-size:13px;color:var(--ink,#3a352f);width:110px;flex:none"><sc-for list="{{ row.options }}" as="o" hint-placeholder-count="18"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select>
+                    <input value="{{ row.note }}" onInput="{{ row.onN }}" placeholder="หมายเหตุ (เช่น IMAX, theatrical ratio, some scenes)" style="flex:1;height:38px;border-radius:9px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)">
+                    <sc-if value="{{ row.canDel }}" hint-placeholder-val="{{ false }}"><span onClick="{{ row.del }}" style="cursor:pointer;color:#c97a6d;font-weight:700;font-size:18px;padding:0 6px;flex:none">×</span></sc-if>
+                  </div>
+                </sc-for>
+                <button onClick="{{ addManualAspect }}" style="height:34px;padding:0 14px;border-radius:9px;border:1px dashed var(--accent,#889a76);background:transparent;color:var(--accent2,#5f7050);font-size:12.5px;font-weight:600;cursor:pointer">+ เพิ่มอัตราส่วน</button>
+              </div>
+            </div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">เวอร์ชันหนัง · เก็บไว้เทียบ (ติ๊กว่าไฟล์ที่ซื้อตรงเวอร์ชันไหน)</div>
+            <div style="margin-bottom:22px">
+              <sc-for list="{{ manualVersionRows }}" as="row" hint-placeholder-count="0">
+                <div style="display:flex;gap:8px;align-items:center;margin-bottom:7px;flex-wrap:wrap">
+                  <select value="{{ row.name }}" onChange="{{ row.onName }}" style="height:38px;border-radius:9px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);padding:0 10px;font-size:13px;color:var(--ink,#3a352f);width:160px;flex:none"><sc-for list="{{ row.options }}" as="o" hint-placeholder-count="8"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select>
+                  <input value="{{ row.dur }}" onInput="{{ row.onDur }}" placeholder="ความยาว เช่น 2:46:00" style="width:170px;flex:none;height:38px;border-radius:9px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)">
+                  <span onClick="{{ row.toggleBought }}" style="{{ row.boughtStyle }}">✓ ไฟล์ที่ซื้อ</span>
+                  <span onClick="{{ row.del }}" style="cursor:pointer;color:#c97a6d;font-weight:700;font-size:18px;padding:0 6px;flex:none">×</span>
+                </div>
+              </sc-for>
+              <button onClick="{{ addManualVersion }}" style="height:34px;padding:0 14px;border-radius:9px;border:1px dashed var(--accent,#889a76);background:transparent;color:var(--accent2,#5f7050);font-size:12.5px;font-weight:600;cursor:pointer">+ เพิ่มเวอร์ชัน</button>
             </div>
             <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted,#9c9286);text-transform:uppercase;margin-bottom:12px">เสียง / ซับ · แตะเลือกได้หลายอย่าง</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;margin-bottom:22px">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px 22px;margin-bottom:22px">
               <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">🔊 เสียง · อังกฤษ</label><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ manualAEngBtns }}" as="b" hint-placeholder-count="5"><span onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</span></sc-for></div></div>
               <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">💬 ซับ · อังกฤษ</label><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ manualSEngBtns }}" as="b" hint-placeholder-count="3"><span onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</span></sc-for></div></div>
               <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">🔊 เสียง · ไทย</label><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ manualAThBtns }}" as="b" hint-placeholder-count="3"><span onClick="{{ b.set }}" style="{{ b.style }}">{{ b.label }}</span></sc-for></div></div>
@@ -810,6 +849,19 @@
 </div>
 </sc-if>
 
+<!-- ===================== POSTER ZOOM LIGHTBOX ===================== -->
+<sc-if value="{{ showPosterZoom }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closePosterZoom }}" style="position:fixed;inset:0;background:rgba(20,16,12,.82);backdrop-filter:blur(4px);z-index:80;display:flex;align-items:center;justify-content:center;padding:30px;animation:fadeUp .25s ease both">
+  <div onClick="{{ stop }}" style="display:flex;flex-direction:column;align-items:center;gap:16px;max-height:92vh">
+    <img src="{{ posterZoomImg }}" style="max-height:74vh;max-width:90vw;border-radius:14px;box-shadow:0 24px 70px -12px rgba(0,0,0,.7)" />
+    <div style="display:flex;gap:12px">
+      <button onClick="{{ closePosterZoom }}" style="height:44px;padding:0 22px;border-radius:12px;background:rgba(255,255,255,.16);color:#fff;font-weight:600;font-size:14px" style-hover="background:rgba(255,255,255,.28)">ปิด</button>
+      <button onClick="{{ pickPosterZoom }}" style="height:44px;padding:0 26px;border-radius:12px;background:var(--accent2,#5f7050);color:#fff;font-weight:700;font-size:14px;box-shadow:0 4px 14px rgba(95,112,80,.4)" style-hover="filter:brightness(1.08)">✓ เลือกรูปนี้</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
 <!-- ===================== EDIT MOVIE MODAL ===================== -->
 <sc-if value="{{ showEdit }}" hint-placeholder-val="{{ false }}">
 <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(40,34,28,.42);backdrop-filter:blur(3px);z-index:60;display:flex;align-items:center;justify-content:center">
@@ -829,8 +881,16 @@
       </div>
       <div style="margin-bottom:8px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">เรท (MPAA)</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.mpaa }}" as="o" hint-placeholder-count="5"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px">
-        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">Aspect หลัก</label><input value="{{ ef.aspect }}" onInput="{{ efH.aspect }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
-        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">Aspect รอง</label><input value="{{ ef.aspect2 }}" onInput="{{ efH.aspect2 }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div style="grid-column:1/3"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">อัตราส่วนภาพ · เลือกได้หลายอัน</label>
+          <sc-for list="{{ efAspectRows }}" as="row" hint-placeholder-count="1">
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:7px">
+              <select value="{{ row.ratio }}" onChange="{{ row.onR }}" style="height:38px;border-radius:9px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);padding:0 10px;font-size:13px;color:var(--ink,#3a352f);width:104px;flex:none"><sc-for list="{{ row.options }}" as="o" hint-placeholder-count="18"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select>
+              <input value="{{ row.note }}" onInput="{{ row.onN }}" placeholder="หมายเหตุ (IMAX, theatrical...)" style="flex:1;height:38px;border-radius:9px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13px;color:var(--ink,#3a352f)" style-focus="border-color:var(--accent,#889a76)">
+              <sc-if value="{{ row.canDel }}" hint-placeholder-val="{{ false }}"><span onClick="{{ row.del }}" style="cursor:pointer;color:#c97a6d;font-weight:700;font-size:18px;padding:0 6px;flex:none">×</span></sc-if>
+            </div>
+          </sc-for>
+          <button onClick="{{ addEfAspect }}" style="height:34px;padding:0 14px;border-radius:9px;border:1px dashed var(--accent,#889a76);background:transparent;color:var(--accent2,#5f7050);font-size:12.5px;font-weight:600;cursor:pointer">+ เพิ่มอัตราส่วน</button>
+        </div>
       </div>
       <div style="margin-bottom:6px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">โหมดสี</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.color }}" as="o" hint-placeholder-count="3"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
       <div style="margin-bottom:6px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">แนวหนัง</label><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ efm.g }}" as="o" hint-placeholder-count="6"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
@@ -872,10 +932,10 @@
       <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">🎞️ คุณภาพ &amp; ไฟล์</div>
       <div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:8px">
         <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ความละเอียด</label><div style="display:flex;gap:7px"><sc-for list="{{ efm.res }}" as="o" hint-placeholder-count="2"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
-        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">DI · มาสเตอร์</label><div style="display:flex;gap:7px"><sc-for list="{{ efm.di }}" as="o" hint-placeholder-count="2"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+        <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">DI · Digital Intermediate</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.di }}" as="o" hint-placeholder-count="2"><span onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
         <div style="flex:1;min-width:140px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ขนาดไฟล์ (GB)</label><input value="{{ ef.gb }}" onInput="{{ efH.gb }}" inputmode="decimal" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
       </div>
-      <div style="margin-bottom:6px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">ภาพ / HDR</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.hdr }}" as="o" hint-placeholder-count="3"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
+      <sc-if value="{{ efShow4k }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:6px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">HDR (เฉพาะ 4K)</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.hdr }}" as="o" hint-placeholder-count="3"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div></sc-if>
 
       <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--accent2,#5f7050);text-transform:uppercase;margin:18px 0 10px">🔊 เสียง &amp; ซับ</div>
       <div style="margin-bottom:8px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:6px">🔊 เสียง · อังกฤษ</label><div style="display:flex;gap:7px;flex-wrap:wrap"><sc-for list="{{ efm.aEng }}" as="o" hint-placeholder-count="5"><span onClick="{{ o.toggle }}" style="{{ o.style }}">{{ o.label }}</span></sc-for></div></div>
@@ -895,6 +955,17 @@
         <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">เวลา (24h)</label><input value="{{ ef.buyTime }}" onInput="{{ efH.buyTime }}" placeholder="HH:MM" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
         <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ราคา (฿)</label><input value="{{ ef.price }}" onInput="{{ efH.price }}" inputmode="numeric" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
         <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ความยาว iTunes</label><input value="{{ ef.dur }}" onInput="{{ efH.dur }}" placeholder="1:52:44" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
+        <div style="grid-column:1/4"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">เวอร์ชันหนัง · เก็บไว้เทียบ (ติ๊กว่าไฟล์ที่ซื้อตรงเวอร์ชันไหน)</label>
+          <sc-for list="{{ efVersionRows }}" as="row" hint-placeholder-count="0">
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:7px;flex-wrap:wrap">
+              <select value="{{ row.name }}" onChange="{{ row.onName }}" style="height:36px;border-radius:9px;border:1px solid var(--line,#ece5d9);background:var(--surface,#fffdf9);padding:0 10px;font-size:13px;color:var(--ink,#3a352f);width:160px;flex:none"><sc-for list="{{ row.options }}" as="o" hint-placeholder-count="8"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select>
+              <input value="{{ row.dur }}" onInput="{{ row.onDur }}" placeholder="2:46:00" style="width:150px;flex:none;height:36px;border-radius:9px;border:1px solid var(--line,#ece5d9);background:var(--bg,#f5f1ea);padding:0 12px;font-size:13px;color:var(--ink,#3a352f)">
+              <span onClick="{{ row.toggleBought }}" style="{{ row.boughtStyle }}">✓ ไฟล์ที่ซื้อ</span>
+              <span onClick="{{ row.del }}" style="cursor:pointer;color:#c97a6d;font-weight:700;font-size:18px;padding:0 6px;flex:none">×</span>
+            </div>
+          </sc-for>
+          <button onClick="{{ addEfVersion }}" style="height:34px;padding:0 14px;border-radius:9px;border:1px dashed var(--accent,#889a76);background:transparent;color:var(--accent2,#5f7050);font-size:12.5px;font-weight:600;cursor:pointer">+ เพิ่มเวอร์ชัน</button>
+        </div>
         <div><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">Order ID / เลขใบเสร็จ</label><input value="{{ ef.oid }}" onInput="{{ efH.oid }}" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
       </div>
       <div style="margin-bottom:8px"><label style="font-size:12px;color:var(--muted,#9c9286);display:block;margin-bottom:5px">ลิงก์ iTunes / Apple TV</label><input value="{{ ef.iturl }}" onInput="{{ efH.iturl }}" placeholder="วางลิงก์ (เว้นว่างได้)" style="{{ efInput }}" style-focus="border-color:var(--accent,#889a76)"></div>
