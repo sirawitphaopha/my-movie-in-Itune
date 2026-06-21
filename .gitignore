@@ -18,4 +18,8 @@ config.js
 *.log
 *.tmp
 _*.txt
+_*.py
 node_modules/
+
+# ===== dev / preview เฉพาะเครื่อง =====
+.claude/

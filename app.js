@@ -1,5 +1,5 @@
 /* ===== เวอร์ชัน + วันที่เผยแพร่ (แก้ที่นี่ที่เดียวเวลาออกเวอร์ชันใหม่) ===== */
-const APP_VERSION = '0.9.4.0';
+const APP_VERSION = '0.9.5.0';
 const BUILD_DATE = '21 มิ.ย. 2569';
 
 class App extends React.Component {
@@ -43,7 +43,7 @@ class App extends React.Component {
     manualUrl: '',
     manualOid: '',
     manualDi: '4K',
-    manualAEng: ['2.0'],
+    manualAEng: ['5.1','2.0'],
     manualSEng: ['Sub'],
     manualATh: [],
     manualSTh: [],
@@ -305,7 +305,10 @@ class App extends React.Component {
     }
   }
   pickAdd(p){
-    this.setState({addSel:p, addFetching:true, addReady:false});
+    this.setState({addSel:p, addFetching:true, addReady:false,
+      manualGb:'', manualPrice:'', manualTh:'', manualWd:'n', manualTh2:false, manualPd:'',
+      manualDur:'', manualUrl:'', manualOid:'', manualDi:'4K', manualRes:'4K', manualHdr:[],
+      manualAEng:['5.1','2.0'], manualSEng:['Sub'], manualATh:[], manualSTh:[], manualAspects:[{r:'2.39:1',n:''}], manualVersions:[]});
     if(window.MovieAPI && window.MovieAPI.ready && p.tmdbId){
       window.MovieAPI.details(p).then(full=>{
         const sel=Object.assign({}, full, {
@@ -315,7 +318,7 @@ class App extends React.Component {
           img: full.p ? (this.IMGBASE+full.p) : (p.img||''),
           grad: this.grad(['#5f7050','#c8c0b0'])
         });
-        this.setState({addSel:sel, addFetching:false, addReady:true});
+        this.setState({addSel:sel, addFetching:false, addReady:true, manualTh: sel.th || ''});
       }).catch(()=>{ this.setState({addFetching:false, addReady:true}); });
     } else {
       setTimeout(()=>this.setState({addFetching:false, addReady:true}),1200); // fallback (POOL)
@@ -340,7 +343,7 @@ class App extends React.Component {
     this.setState(s=>({ movies:[mv, ...s.movies], addSel:null, addReady:false, addQuery:'', addResults:[],
       manualGb:'', manualPrice:'', manualTh:'', manualWd:'n', manualTh2:false, manualPd:'',
       manualDur:'', manualUrl:'', manualOid:'', manualDi:'4K', manualRes:'4K', manualHdr:[],
-      manualAEng:['2.0'], manualSEng:['Sub'], manualATh:[], manualSTh:[], manualAspects:[{r:'2.39:1',n:''}], manualVersions:[], view:'table' }));
+      manualAEng:['5.1','2.0'], manualSEng:['Sub'], manualATh:[], manualSTh:[], manualAspects:[{r:'2.39:1',n:''}], manualVersions:[], view:'table' }));
     this.toast('เพิ่ม “'+p.t+'” ลงคอลเลกชันแล้ว');
   }
   setManualRes(r){ this.setState({manualRes:r}); }
@@ -703,36 +706,14 @@ class App extends React.Component {
     const rawResults = apiOn ? (this.state.addResults||[]) : this.POOL.filter(p=>!aq||p.t.toLowerCase().includes(aq));
     const addResults=rawResults.map(p=>({...p, img:(p.img||(p.p?(this.IMGBASE+p.p):'')), hasImg:(p.hasImg!=null?p.hasImg:!!p.p), imgErr:(e)=>this.hideImg(e), pick:()=>this.pickAdd(p)}));
     const asel=this.state.addSel;
-    const addAutoFields = [];
+    const addAutoGroups = [];
     if(asel){
-      const pushAF=(k,v)=>{ if(v!=null && v!=='' && v!=='—' && v!==0 && v!=='0') addAutoFields.push({k:k, v:String(v)}); };
-      pushAF('ชื่อไทย', asel.th);
-      pushAF('ปี', asel.y);
-      pushAF('แนว', asel.genre);
-      pushAF('ความยาว', asel.runtime?asel.runtime+' นาที':'');
-      pushAF('เรท MPAA', asel.mpaa);
-      pushAF('สตูดิโอ', asel.studio);
-      pushAF('ผู้กำกับ', asel.dir);
-      pushAF('นักเขียนบท', asel.wr);
-      pushAF('เรื่อง (Story)', asel.story);
-      pushAF('ตัวละคร', asel.chars);
-      pushAF('นักแสดงนำ', asel.cast);
-      pushAF('กำกับภาพ', asel.dop);
-      pushAF('ตัดต่อ', asel.ed);
-      pushAF('เพลงประกอบ', asel.mus);
-      pushAF('โปรดิวเซอร์', asel.prod);
-      pushAF('ออกแบบงานสร้าง', asel.pdes);
-      pushAF('ออกแบบเครื่องแต่งกาย', asel.cost);
-      pushAF('เทคนิคภาพ (VFX)', asel.vfx);
-      pushAF('IMDb', asel.imdb);
-      pushAF('Rotten Tomatoes', asel.rt?asel.rt+'%':'');
-      pushAF('Metacritic', asel.mc);
-      pushAF('ทุนสร้าง', asel.bud?this.money(asel.bud):'');
-      pushAF('รายได้ทั่วโลก', asel.ww?this.money(asel.ww):'');
-      pushAF('รายได้ในประเทศ', asel.dom?this.money(asel.dom):'');
-      pushAF('ออสการ์ชนะ', asel.ow);
-      pushAF('ออสการ์เข้าชิง', asel.on);
-      pushAF('รางวัล', asel.aw);
+      const grp=(title, icon, fields)=>{ const rows=fields.filter(f=>f.v!=null && f.v!=='' && f.v!=='—' && f.v!==0 && f.v!=='0').map(f=>({k:f.k, v:String(f.v)})); if(rows.length) addAutoGroups.push({title:title, icon:icon, rows:rows}); };
+      grp('ข้อมูลหนัง','🎬',[{k:'ปี',v:asel.y},{k:'แนว',v:asel.genre},{k:'ความยาว',v:asel.runtime?asel.runtime+' นาที':''},{k:'เรท MPAA',v:asel.mpaa},{k:'สตูดิโอ',v:asel.studio}]);
+      grp('ทีมงาน · Academy Award categories','🎭',[{k:'Directing',v:asel.dir},{k:'Writing',v:asel.wr},{k:'Story',v:asel.story},{k:'Characters',v:asel.chars},{k:'Cast',v:asel.cast},{k:'Cinematography',v:asel.dop},{k:'Film editing',v:asel.ed},{k:'Music',v:asel.mus},{k:'Producer',v:asel.prod},{k:'Production design',v:asel.pdes},{k:'Costume design',v:asel.cost},{k:'Visual effects',v:asel.vfx}]);
+      grp('คะแนน','⭐',[{k:'IMDb',v:asel.imdb},{k:'Rotten Tomatoes',v:asel.rt?asel.rt+'%':''},{k:'Metacritic',v:asel.mc}]);
+      grp('Box Office','💰',[{k:'ทุนสร้าง',v:asel.bud?this.money(asel.bud):''},{k:'รายได้ทั่วโลก',v:asel.ww?this.money(asel.ww):''},{k:'รายได้ในประเทศ',v:asel.dom?this.money(asel.dom):''}]);
+      grp('ออสการ์','🏆',[{k:'ชนะ',v:asel.ow},{k:'เข้าชิง',v:asel.on},{k:'รางวัล',v:asel.aw}]);
     }
 
     // sortable headers (every column)
@@ -886,17 +867,29 @@ class App extends React.Component {
       manualDur:this.state.manualDur, onManualDur:(e)=>this.setState({manualDur:e.target.value}),
       manualUrl:this.state.manualUrl, onManualUrl:(e)=>this.setState({manualUrl:e.target.value}),
       manualOid:this.state.manualOid, onManualOid:(e)=>this.setState({manualOid:e.target.value}),
-      manualAspectRows: this.state.manualAspects.map((a,i)=>({
-        ratio:a.r, note:a.n, options: this.ASPECT_OPTIONS.map(o=>({value:o, label:o})),
+      manualAspectRows: this.state.manualAspects.map((a,i)=>{
+        const cust=this.ASPECT_OPTIONS.indexOf(a.r)<0;
+        return {
+        ratio:a.r, note:a.n, custom:cust, notCustom:!cust, ratioSel:cust?'__custom__':a.r,
+        options: this.ASPECT_OPTIONS.map(o=>({value:o, label:o})).concat([{value:'__custom__', label:'อื่นๆ (พิมพ์เอง)'}]),
+        onSel:(e)=>this.setManualAspect(i,'r',e.target.value==='__custom__'?'':e.target.value),
         onR:(e)=>this.setManualAspect(i,'r',e.target.value), onN:(e)=>this.setManualAspect(i,'n',e.target.value),
+        backToList:()=>this.setManualAspect(i,'r','2.39:1'),
         del:()=>this.delManualAspect(i), canDel:this.state.manualAspects.length>1
-      })),
+        };
+      }),
       addManualAspect:()=>this.addManualAspect(),
-      efAspectRows: (this.state.editForm && this.state.editForm.aspects ? this.state.editForm.aspects : []).map((a,i)=>({
-        ratio:a.r, note:a.n, options: this.ASPECT_OPTIONS.map(o=>({value:o, label:o})),
+      efAspectRows: (this.state.editForm && this.state.editForm.aspects ? this.state.editForm.aspects : []).map((a,i)=>{
+        const cust=this.ASPECT_OPTIONS.indexOf(a.r)<0;
+        return {
+        ratio:a.r, note:a.n, custom:cust, notCustom:!cust, ratioSel:cust?'__custom__':a.r,
+        options: this.ASPECT_OPTIONS.map(o=>({value:o, label:o})).concat([{value:'__custom__', label:'อื่นๆ (พิมพ์เอง)'}]),
+        onSel:(e)=>this.setEfAspect(i,'r',e.target.value==='__custom__'?'':e.target.value),
         onR:(e)=>this.setEfAspect(i,'r',e.target.value), onN:(e)=>this.setEfAspect(i,'n',e.target.value),
+        backToList:()=>this.setEfAspect(i,'r','2.39:1'),
         del:()=>this.delEfAspect(i), canDel:(this.state.editForm&&this.state.editForm.aspects&&this.state.editForm.aspects.length>1)
-      })),
+        };
+      }),
       addEfAspect:()=>this.addEfAspect(),
       manualVersionRows: this.state.manualVersions.map((v,i)=>({
         name:v.name, dur:v.dur, bought:!!v.bought, options: this.VERSION_OPTIONS.map(o=>({value:o, label:o})),
@@ -915,14 +908,22 @@ class App extends React.Component {
         style:'padding:5px 11px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid '+(this.state.manualDi===d?t.accent2:t.line)+';'+(this.state.manualDi===d?('background:'+t.accent2+';color:#fff;'):('background:'+t.bg+';color:'+t.ink+';'))})),
       manualAEngBtns:['Atmos','7.1','5.1','2.0','AD'].map(v=>({label:this.AENG_LABELS[v]||v, set:()=>this.toggleManualAudio('manualAEng',v), style:this.audChip(this.state.manualAEng.indexOf(v)>=0,t)})),
       manualSEngBtns:this.FIELD_OPTIONS.sEng.map(v=>({label:v, set:()=>this.toggleManualAudio('manualSEng',v), style:this.audChip(this.state.manualSEng.indexOf(v)>=0,t)})),
+      manualSubGroups:[
+        {label:'Sub', btns:[['มี','Sub'],['US','Sub (US)'],['UK','Sub (UK)'],['US+UK','Sub (US)(UK)']]},
+        {label:'CC', btns:[['มี','CC'],['US','CC (US)'],['UK','CC (UK)'],['US+UK','CC (US)(UK)']]},
+        {label:'SDH', btns:[['มี','SDH'],['US','SDH (US)'],['UK','SDH (UK)'],['US+UK','SDH (US)(UK)']]}
+      ].map(g=>({label:g.label, btns:g.btns.map(b=>({label:b[0], set:()=>this.toggleManualAudio('manualSEng',b[1]), style:this.audChip(this.state.manualSEng.indexOf(b[1])>=0,t)}))})),
       manualAThBtns:['5.1','2.0'].map(v=>({label:v, set:()=>this.toggleManualAudio('manualATh',v), style:this.audChip(this.state.manualATh.indexOf(v)>=0,t)})),
       manualSThBtns:['Sub'].map(v=>({label:v, set:()=>this.toggleManualAudio('manualSTh',v), style:this.audChip(this.state.manualSTh.indexOf(v)>=0,t)})),
-      manualWd:this.state.manualWd, toggleManualWd:()=>this.setState(s=>({manualWd:{n:'W',W:'w',w:'n'}[s.manualWd||'n']})),
-      manualWdLabel:{n:'ยังไม่ได้ดู', W:'✓ ดูแล้ว', w:'✓ ดูแล้ว · นานมากจำไม่ค่อยได้'}[this.state.manualWd],
-      manualWdStyle:'height:40px;padding:0 16px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;width:100%;'+(this.state.manualWd==='W'?('border:1px solid transparent;background:'+t.accent2+';color:#fff;'):this.state.manualWd==='w'?('border:1px solid transparent;background:'+t.accent+';color:#fff;'):('border:1px solid '+t.line+';background:'+t.bg+';color:'+t.muted+';')),
-      manualTh2:this.state.manualTh2, toggleManualTh2:()=>this.setState(s=>({manualTh2:!s.manualTh2})),
-      manualTh2Label:this.state.manualTh2?'✓ เคยดูในโรง':'ไม่เคยดูในโรง',
-      manualTh2Style:'height:40px;padding:0 16px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;width:100%;border:1px solid '+(this.state.manualTh2?'transparent':t.line)+';'+(this.state.manualTh2?('background:'+t.accent2+';color:#fff;'):('background:'+t.bg+';color:'+t.muted+';')),
+      manualWdBtns:[
+        {label:'ยังไม่ได้ดู', set:()=>this.setState({manualWd:'n'}), style:this.audChip(this.state.manualWd==='n',t)},
+        {label:'✓ ดูแล้ว', set:()=>this.setState({manualWd:'W'}), style:this.audChip(this.state.manualWd==='W',t)},
+        {label:'ดูแล้ว · จำไม่ค่อยได้', set:()=>this.setState({manualWd:'w'}), style:this.audChip(this.state.manualWd==='w',t)},
+      ],
+      manualTh2Btns:[
+        {label:'ไม่เคย', set:()=>this.setState({manualTh2:false}), style:this.audChip(!this.state.manualTh2,t)},
+        {label:'✓ เคยดูในโรง', set:()=>this.setState({manualTh2:true}), style:this.audChip(this.state.manualTh2,t)},
+      ],
       // table
       rows, rowCount:list.length, thBase, thBaseR, thBaseCalc, thBaseCalcR, tdC, tdCR, tdL, tdLR, tdCalc, tdCalcR,
       sorters, arrows,
@@ -994,7 +995,7 @@ class App extends React.Component {
       posterZoomImg: this.state.posterZoom?this.state.posterZoom.img:'',
       closePosterZoom:()=>this.setState({posterZoom:null}),
       pickPosterZoom:()=>{ const pz=this.state.posterZoom; if(pz){this.pickPoster(pz.path);} this.setState({posterZoom:null}); },
-      addAutoFields, addCancel:()=>this.addCancel(), addSave:()=>this.addSave(),
+      addAutoGroups, addCancel:()=>this.addCancel(), addSave:()=>this.addSave(),
       // toast
       showToast:!!this.state.toast, toastMsg:this.state.toast,
       // footer: เวอร์ชัน + วันที่เผยแพร่
