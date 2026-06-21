@@ -65,7 +65,7 @@
    * รับ result = {tmdbId, t, y} (จากผลค้นหา) เพื่อยิง OMDb ด้วยชื่อ+ปีขนานไปเลย ไม่ต้องรอ imdb_id */
   function details(result) {
     if (typeof result === 'number' || typeof result === 'string') result = { tmdbId: result };
-    var tmdbP = tmdb('/movie/' + result.tmdbId, 'append_to_response=credits,release_dates,external_ids');
+    var tmdbP = tmdb('/movie/' + result.tmdbId, 'append_to_response=credits,release_dates,external_ids,images,translations&include_image_language=en,null');
     var omdbP = result.t
       ? fetch(omdbURL('t=' + encodeURIComponent(result.t) + (result.y ? ('&y=' + result.y) : '')))
           .then(function (r) { return r.json(); }).catch(function () { return null; })
@@ -89,27 +89,44 @@
 
         var genres = (d.genres || []).map(function (g) { return GENRE_MAP[g.name] || g.name; });
 
+        // ชื่อไทยจาก translations (TMDb) — ถ้ามีคนแปลไว้
+        var thaiTitle = '';
+        try {
+          var trans = (d.translations && d.translations.translations) || [];
+          var thTr = trans.find(function (x) { return x.iso_639_1 === 'th'; });
+          if (thTr && thTr.data && thTr.data.title) thaiTitle = thTr.data.title;
+        } catch (e) {}
+
         var movie = {
           p: d.poster_path || '',
           t: d.title || '',
-          th: '',                       // ชื่อไทย — กรอกเองทีหลัง
+          th: thaiTitle,                // ชื่อไทยจาก API (ถ้ามี) ไม่งั้นเว้นว่างให้กรอกเอง
           y: parseInt((d.release_date || '').slice(0, 4), 10) || 0,
           g: genres,
           run: d.runtime || 0,
           mpaa: mpaa,
           studio: (d.production_companies && d.production_companies[0] && d.production_companies[0].name) || '—',
           dir: crewBy(crew, ['Director']),
-          wr: crewBy(crew, ['Screenplay', 'Writer', 'Story']),
+          wr: crewBy(crew, ['Screenplay', 'Writer']),
+          story: crewBy(crew, ['Story']),
+          chars: crewBy(crew, ['Characters']),
           cast: cast.slice(0, 3).map(function (c) { return c.name; }).join(', ') || '—',
-          dop: crewBy(crew, ['Director of Photography']),
+          dop: crewBy(crew, ['Director of Photography', 'Cinematography']),
           ed: crewBy(crew, ['Editor']),
           mus: crewBy(crew, ['Original Music Composer', 'Music']),
+          prod: crewBy(crew, ['Producer']),
+          pdes: crewBy(crew, ['Production Design']),
+          cost: crewBy(crew, ['Costume Design']),
+          vfx: crewBy(crew, ['Visual Effects Supervisor', 'VFX Supervisor', 'Visual Effects Producer']),
           bud: d.budget || 0,
           ww: d.revenue || 0,
           dom: 0,
           syn: d.overview || '',
           imdbId: (d.external_ids && d.external_ids.imdb_id) || '',
           imdb: d.vote_average ? Number(d.vote_average.toFixed(1)) : 0,
+          posters: ((d.images && d.images.posters) || []).slice(0, 12).map(function (im) {
+            return { path: im.file_path, img: IMG + im.file_path, thumb: 'https://image.tmdb.org/t/p/w185' + im.file_path };
+          }),
           rt: 0, mc: 0, aw: '—', ow: 0, on: 0
         };
 
