@@ -13,9 +13,10 @@
 แอปนี้ **ไม่มีขั้นตอน build** ใช้ React โหลดจาก CDN + ไฟล์ JS ธรรมดา
 
 หัวใจคือแยก "หน้าตา" ออกจาก "สมอง" แบบ MVVM:
-1. **`app.js`** — `class App extends React.Component` (พอร์ตจาก logic เดิมเกือบ 1:1)
-   - เมธอด `renderVals()` = หัวใจ — คืน object ~250 binding (ค่าที่คำนวณแล้ว + ฟังก์ชันปุ่ม + view-model ของการ์ด/แถว)
-   - `render()` = `window.DC.renderTemplate(this.renderVals())`
+1. **สมอง = `class App` แยก 3 ไฟล์** (โหลดเรียง core→actions→render · classic script แชร์ global scope · method ต่อ `App.prototype` เรียกข้ามไฟล์ผ่าน `this` ได้):
+   - **`app-core.js`** — `class App extends React.Component`: state + ค่าคงที่ทั้งหมด + POOL/seed + lifecycle + `render()` (= `window.DC.renderTemplate(this.renderVals())`)
+   - **`app-actions.js`** — `Object.assign(App.prototype,{...})`: method การกระทำ/ปุ่ม/helper ทั้งหมด
+   - **`app-render.js`** — `Object.assign(App.prototype,{renderVals})`: `renderVals()` = หัวใจ คืน object ~250 binding (ค่าคำนวณ + ฟังก์ชันปุ่ม + view-model การ์ด/แถว) + จุดเริ่มแอป
 2. **`template.html`** — markup ทั้งแอป เขียนด้วย directive พิเศษ:
    - `{{ path }}` = ดึงค่าจาก renderVals (เป็น path ล้วนๆ เช่น `m.stars`)
    - `<sc-if value="{{ cond }}">` = แสดงเมื่อจริง
@@ -27,21 +28,26 @@
 
 **แก้ตรงไหน:**
 - เปลี่ยน**หน้าตา/layout** → แก้ `template.html`
-- เปลี่ยน**ตรรกะ/ข้อมูล/พฤติกรรม** → แก้ `app.js`
+- เปลี่ยน**view-model/binding ที่ส่งเข้า template** → แก้ `renderVals()` ใน `app-render.js`
+- เปลี่ยน**ตรรกะปุ่ม/การกระทำ** → แก้ `app-actions.js`
+- เปลี่ยน**state / ค่าคงที่ / ข้อมูล seed** → แก้ `app-core.js`
 - ตัวแปลเองมีบั๊ก (พวก directive) → แก้ `dc-runtime.js`
 
 ## 📁 ไฟล์
 ```
-index.html      โหลด React (CDN) + dc-runtime.js + app.js (มี ?v= กัน cache)
-app.js          logic + ข้อมูล seed + POOL + APP_VERSION/BUILD_DATE
+index.html      โหลด React (CDN) + dc-runtime.js + app-core/app-actions/app-render (มี ?v= กัน cache)
+app-core.js     class App: state + ค่าคงที่ทั้งหมด (ROLES/EDFIELDS/FIELD_OPTIONS/ASPECT_OPTIONS/TONES ฯลฯ) + POOL/seed + GROUP_ORDER/GROUP_LABELS + APP_VERSION/BUILD_DATE + lifecycle + render()
+app-actions.js  Object.assign(App.prototype,{...}) 92 method: การกระทำ/ปุ่ม/helper ทั้งหมด (pickAdd/addSave/setManual*/sort/commitEdit/saveEdit/money/grad ฯลฯ)
+app-render.js   Object.assign(App.prototype,{renderVals}) สร้าง view-model ~250 binding + จุดเริ่มแอป (fetch template→DC.init→ReactDOM.render)
 template.html   markup ทั้งแอป (fetch ตอนรันด้วย {cache:'no-cache'})
 dc-runtime.js   ตัวแปลเทมเพลต → React
 styles.css      reset + keyframes (spin/fadeUp/slideIn/pop/barGrow/pulse)
+※ เดิม logic อยู่ app.js ไฟล์เดียว · แยกเป็น 3 ไฟล์ตอน refactor (push 7e5c188) · classic script แชร์ global · method ต่อ prototype เรียกข้ามไฟล์ได้
 ```
 
 ## 🏷️ ออกเวอร์ชันใหม่ (bump version) — แก้ 3 จุด
-1. `app.js` บนสุด: `const APP_VERSION = 'X.X';` + `const BUILD_DATE = 'DD เดือนย่อ พ.ศ.';`
-2. `index.html`: เปลี่ยน `?v=X.X` ที่ `<script src>` ทั้ง 2 ตัว (กันเบราว์เซอร์โหลดของเก่า)
+1. `app-core.js` บนสุด: `const APP_VERSION = 'X.X';` + `const BUILD_DATE = 'DD เดือนย่อ พ.ศ.';`
+2. `index.html`: เปลี่ยน `?v=X.X` ที่ `<script src>` ทุกตัว (config/dc-runtime/cloud/api/app-core/app-actions/app-render — กันเบราว์เซอร์โหลดของเก่า)
 3. footer แสดงเอง (binding `appVersion`/`buildDate`)
 - ⚠️ อย่า bump เอง — รอพี่กันสั่ง · เช็ค `git log` ของ remote ก่อนเสมอว่า version ล่าสุดที่ push จริงคืออะไร
 

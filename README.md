@@ -49,9 +49,13 @@ npx serve -l 8770
 
 ```
 index.html       หน้าหลัก (โหลด React + ไฟล์ของเรา)
-app.js           สมองแอป — logic ทั้งหมด + ข้อมูล + เวอร์ชัน
+app-core.js      สมองแอป — state + ค่าคงที่ + ข้อมูล + เวอร์ชัน + lifecycle
+app-actions.js   การกระทำ/ปุ่มทั้งหมด (ต่อเข้า App.prototype)
+app-render.js    สร้างหน้าจอ (renderVals) + จุดเริ่มแอป
 template.html    หน้าตา (markup ของทั้งแอป)
 dc-runtime.js    ตัวแปลเทมเพลต → React
+cloud.js         เชื่อม Supabase (sync ข้อมูลคลาวด์)
+api.js           ค้นหา + ดึงข้อมูลหนังจริง (TMDb/OMDb)
 styles.css       สไตล์ฐาน + animation
 ```
 
@@ -59,5 +63,5 @@ styles.css       สไตล์ฐาน + animation
 
 ## 📌 สถานะ
 
-เวอร์ชัน **0.9** — ใช้งานได้ครบทุกหน้า เก็บข้อมูลในเครื่อง
-ถัดไป: เชื่อมคลาวด์ (sync ทุกเครื่อง) → ต่อ API ค้นหนังจริง → ขึ้นเว็บจริง
+เวอร์ชัน **0.9.5.0** — ใช้งานได้ครบทุกหน้า · เชื่อม Supabase (sync คลาวด์ทุกเครื่อง) + ต่อ API จริง (TMDb/OMDb) แล้ว
+ถัดไป: ใส่หนังจริงเข้าระบบ → ขึ้นเว็บจริง (Cloudflare Pages)
