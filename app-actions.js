@@ -74,12 +74,12 @@ Object.assign(App.prototype, {
     const aspList = (m.aspects && m.aspects.length) ? m.aspects : [{r:((m.ar==='multi'?'1.85:1':m.ar)||'2.39:1'), n:''}];
     const aspect = aspList[0] ? (aspList[0].r + (aspList[0].n?' ('+aspList[0].n+')':'')) : '—';
     const aspect2 = aspList.slice(1).map(a=>a.r+(a.n?' ('+a.n+')':'')).join(', ');
-    const color = m.co==='ผสม' ? 'สี + ขาวดำ' : (m.co||'สี');
+    const color = m.co==='ผสม' ? 'สี+ขาวดำ' : (m.co||'สี');
     const imdbVotes = Math.round((m.ww/1e6)*1400 + m.imdb*40000 + id*2300);
     const rtCount = 180 + ((id*23)%260);
     const metaCount = 28 + ((id*9)%34);
     const hh=String((9+id*2)%24).padStart(2,'0'), mm=String((id*13)%60).padStart(2,'0');
-    return {...m, ws, wd:(ws!=='n'), res, hdr, audio, audioEng, subEng, thai, aEng, sEng, aTh, sTh, hasExtra, extraSub, aspect, aspect2, aspects:aspList, versions:(m.versions||[]), color, imdbVotes, rtCount, metaCount, buyDate:m.pd, buyTime:hh+':'+mm};
+    return {...m, ws, wd:(ws!=='n'), res, hdr, audio, audioEng, subEng, thai, aEng, sEng, aTh, sTh, hasExtra, extraSub, aspect, aspect2, aspects:aspList, versions:(m.versions||[]), color, imdbVotes, rtCount, metaCount, buyDate:m.pd, buyTime:(m.buyTime||hh+':'+mm), source:(m.source||[]), filmLen:(m.filmLen||'')};
   },
 
   // ---------- helpers ----------
@@ -175,7 +175,7 @@ Object.assign(App.prototype, {
     this.setState({addSel:p, addFetching:true, addReady:false,
       manualGb:'', manualPrice:'', manualTh:'', manualWd:'n', manualTh2:false, manualPd:'',
       manualDur:'', manualUrl:'', manualOid:'', manualDi:'4K', manualRes:'4K', manualHdr:[],
-      manualAEng:['5.1','2.0'], manualSEng:['Sub'], manualATh:[], manualSTh:[], manualAspects:[{r:'2.39:1',n:''}], manualVersions:[]});
+      manualAEng:['5.1','2.0'], manualSEng:['Sub'], manualATh:[], manualSTh:[], manualAspects:[{r:'2.39:1',n:''}], manualVersions:[], manualSource:[], manualSourceInput:'', manualColor:'สี', manualFilmLen:'', manualTime:''});
     if(window.MovieAPI && window.MovieAPI.ready && p.tmdbId){
       window.MovieAPI.details(p).then(full=>{
         const sel=Object.assign({}, full, {
@@ -204,13 +204,13 @@ Object.assign(App.prototype, {
       bud:p.bud||0, ww:p.ww||0, dom:p.dom||0, ws:this.state.manualWd, wd:(this.state.manualWd!=='n'), th2:this.state.manualTh2,
       mine:0, re:(this.state.manualRes==='4K'?['4K'].concat(this.state.manualHdr):['FHD']), gb:parseFloat(this.state.manualGb)||0, au:['5.1'], su:['Eng','Thai'],
       aEng:[...this.state.manualAEng], sEng:[...this.state.manualSEng], aTh:[...this.state.manualATh], sTh:[...this.state.manualSTh],
-      ex:false, ar:((this.state.manualAspects[0]&&this.state.manualAspects[0].r)||'2.39:1'), aspects:this.state.manualAspects.filter(a=>a.r), versions:[...this.state.manualVersions], co:'สี', di:this.state.manualDi, dur:this.state.manualDur.trim(), iturl:this.state.manualUrl.trim(), oid:this.state.manualOid.trim(),
-      pd:(this.state.manualPd||today), price:parseInt(this.state.manualPrice,10)||0,
+      ex:false, ar:((this.state.manualAspects[0]&&this.state.manualAspects[0].r)||'2.39:1'), aspects:this.state.manualAspects.filter(a=>a.r), versions:[...this.state.manualVersions], co:this.state.manualColor, source:[...this.state.manualSource], filmLen:this.state.manualFilmLen.trim(), di:this.state.manualDi, dur:this.state.manualDur.trim(), iturl:this.state.manualUrl.trim(), oid:this.state.manualOid.trim(),
+      pd:(this.state.manualPd||today), buyTime:this.state.manualTime, price:parseInt(this.state.manualPrice,10)||0,
       syn:p.syn||'—', tmdbId:p.tmdbId||null, imdbId:p.imdbId||'', c:['#5f7050','#c8c0b0']});
     this.setState(s=>({ movies:[mv, ...s.movies], addSel:null, addReady:false, addQuery:'', addResults:[],
       manualGb:'', manualPrice:'', manualTh:'', manualWd:'n', manualTh2:false, manualPd:'',
       manualDur:'', manualUrl:'', manualOid:'', manualDi:'4K', manualRes:'4K', manualHdr:[],
-      manualAEng:['5.1','2.0'], manualSEng:['Sub'], manualATh:[], manualSTh:[], manualAspects:[{r:'2.39:1',n:''}], manualVersions:[], view:'table' }));
+      manualAEng:['5.1','2.0'], manualSEng:['Sub'], manualATh:[], manualSTh:[], manualAspects:[{r:'2.39:1',n:''}], manualVersions:[], manualSource:[], manualSourceInput:'', manualColor:'สี', manualFilmLen:'', manualTime:'', view:'table' }));
     this.toast('เพิ่ม “'+p.t+'” ลงคอลเลกชันแล้ว');
   },
   setManualRes(r){ this.setState({manualRes:r}); },
@@ -229,6 +229,8 @@ Object.assign(App.prototype, {
   setManualStars(n){ this.setState({manualStars:n}); },
   pickPoster(path){ this.setState(s=>({addSel:Object.assign({}, s.addSel, {p:path, img:this.IMGBASE+path})})); },
   toggleManualAudio(field, val){ this.setState(s=>{ const arr=s[field]||[]; return {[field]: arr.indexOf(val)>=0?arr.filter(x=>x!==val):arr.concat([val])}; }); },
+  addManualSourceCustom(){ let v=(this.state.manualSourceInput||'').trim(); if(/^[0-9]+(\.[0-9]+)?$/.test(v)) v=v+'K'; if(v && this.state.manualSource.indexOf(v)<0){ this.setState(s=>({manualSource:[...s.manualSource, v], manualSourceInput:''})); } else { this.setState({manualSourceInput:''}); } },
+  addEfSourceCustom(){ let v=(this.state.efSourceInput||'').trim(); if(/^[0-9]+(\.[0-9]+)?$/.test(v)) v=v+'K'; if(v && (this.state.editForm.source||[]).indexOf(v)<0){ this.setState(s=>({editForm:{...s.editForm, source:[...(s.editForm.source||[]), v]}, efSourceInput:''})); } else { this.setState({efSourceInput:''}); } },
 
   // ui controls
   toggleCollapse(){ this.setState(s=>({collapsed:!s.collapsed})); },
@@ -288,7 +290,7 @@ Object.assign(App.prototype, {
       budM:Math.round(m.bud/1e6), wwM:Math.round(m.ww/1e6), domM:Math.round(m.dom/1e6),
       res:m.res, gb:m.gb, hdr:[...(m.hdr||[])], audio:[...(m.audio||[])], audioEng:[...(m.audioEng||[])], subEng:[...(m.subEng||[])], thai:[...(m.thai||[])], g:[...(m.g||[])],
       hasExtra:m.hasExtra, extraSub:m.extraSub||'', buyDate:m.buyDate, buyTime:m.buyTime, price:m.price,
-      dur:m.dur||'', iturl:m.iturl||'', oid:m.oid||'', di:m.di||'4K',
+      dur:m.dur||'', iturl:m.iturl||'', oid:m.oid||'', di:m.di||'4K', source:[...(m.source||[])], filmLen:m.filmLen||'',
       aEng:[...(m.aEng||[])], sEng:[...(m.sEng||[])], aTh:[...(m.aTh||[])], sTh:[...(m.sTh||[])], ws:(m.ws||(m.wd?'W':'n')),
       mine:m.mine, wd:m.wd, th2:m.th2, re:[...m.re], cv}});
   },
@@ -307,7 +309,7 @@ Object.assign(App.prototype, {
     const F=(v,d)=>{ const n=parseFloat(v); return isNaN(n)?d:n; };
     this.setState(s=>({
       movies:s.movies.map(m=>m.id===f.id?{...m,
-        t:(f.t||'').trim()||m.t, th:(f.th||'').trim(), y:I(f.y,m.y), run:I(f.run,m.run), mpaa:f.mpaa, studio:f.studio, color:f.color, aspects:(f.aspects||[]).filter(a=>a.r), versions:[...(f.versions||[])], ar:((f.aspects&&f.aspects[0]&&f.aspects[0].r)||m.ar),
+        t:(f.t||'').trim()||m.t, th:(f.th||'').trim(), y:I(f.y,m.y), run:I(f.run,m.run), mpaa:f.mpaa, studio:f.studio, color:f.color, co:f.color, source:[...(f.source||[])], filmLen:(f.filmLen||'').trim(), aspects:(f.aspects||[]).filter(a=>a.r), versions:[...(f.versions||[])], ar:((f.aspects&&f.aspects[0]&&f.aspects[0].r)||m.ar),
         dir:f.dir, wr:f.wr, dop:f.dop, ed:f.ed, mus:f.mus, cast:f.cast,
         imdb:F(f.imdb,m.imdb), imdbVotes:I(f.imdbVotes,m.imdbVotes), rt:I(f.rt,m.rt), rtCount:I(f.rtCount,m.rtCount), mc:I(f.mc,m.mc), metaCount:I(f.metaCount,m.metaCount),
         ow:I(f.ow,m.ow), on:I(f.on,m.on), aw:f.aw,

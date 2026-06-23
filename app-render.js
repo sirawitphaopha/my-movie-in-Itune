@@ -99,7 +99,7 @@ Object.assign(App.prototype, {
         imdbVotesLabel: m.imdbVotes.toLocaleString('en-US'), rtCountLabel: m.rtCount.toLocaleString('en-US'), mcCountLabel: m.metaCount.toLocaleString('en-US'),
         ow:m.ow, on:m.on, aw:m.aw,
         res:m.res, hdrTags:m.hdr||[], aEngTags:(m.aEng&&m.aEng.length?m.aEng:['—']), sEngTags:(m.sEng&&m.sEng.length?m.sEng:['—']), aThTags:(m.aTh&&m.aTh.length?m.aTh:['—']), sThTags:(m.sTh&&m.sTh.length?m.sTh:['—']),
-        color:m.color, aspect:m.aspect, aspect2:(m.aspect2||'—'), di:(m.di||'—'),
+        color:m.color, aspect:m.aspect, aspect2:(m.aspect2||'—'), di:(m.di||'—'), sourceText:((m.source||[]).join(', ')||'—'), filmLen:(m.filmLen||'—'),
         hasExtra:m.hasExtra, extraIcon:m.hasExtra?'✓':'—', extraSub:(m.extraSub||'—'),
         durLabel:(m.dur&&m.dur.trim()?m.dur:'—'), oidLabel:(m.oid&&m.oid.trim()?m.oid:'—'),
         hasIturl:!!(m.iturl&&m.iturl.trim()), iturlIcon:(m.iturl&&m.iturl.trim())?'▶':'—', openIturl:()=>{ if(m.iturl&&m.iturl.trim()){ window.open(m.iturl.trim(),'_blank','noopener'); } },
@@ -113,7 +113,7 @@ Object.assign(App.prototype, {
         selChip: this.state.sel.includes(m.id) ? ('flex:none;width:17px;height:17px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer;background:'+t.accent2+';border:1.5px solid '+t.accent2) : ('flex:none;width:17px;height:17px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border:1.5px solid '+t.line),
       };
     };
-    const GW={info:5, crew:(this.state.crewOpen?5:1), score:6, box:5, status:1, file:2, oscar:3, quality:5, audio:4, itunes:4, purchase:4, custom:this.state.customCols.length};
+    const GW={info:5, crew:(this.state.crewOpen?5:1), score:6, box:5, status:1, file:2, oscar:3, quality:7, audio:4, itunes:4, purchase:4, custom:this.state.customCols.length};
     const hidG=this.state.hiddenGroups||[];
     let visCols=0; ['info','crew','score','box','status','file','oscar','quality','audio','itunes','purchase','custom'].forEach(k=>{ if(!hidG.includes(k)) visCols+=GW[k]; });
     const groupColspan = visCols;
@@ -315,12 +315,13 @@ Object.assign(App.prototype, {
     const efChip=(on)=>'padding:6px 12px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid '+(on?t.accent2:t.line)+';'+(on?('background:'+t.accent2+';color:#fff;'):('background:'+t.bg+';color:'+t.ink+';'));
     const mkMulti=(field)=> (this.FIELD_OPTIONS[field]||[]).map(o=>{ const on=ef0&&(ef0[field]||[]).includes(o); const lab=(field==='aEng'&&this.AENG_LABELS[o])?this.AENG_LABELS[o]:o; return {label:lab, style:efChip(on), toggle:()=>this.toggleEfArr(field,o)}; });
     const mkSingle=(field,opts)=> opts.map(o=>{ const on=ef0&&ef0[field]===o; return {label:o, style:efChip(on), set:()=>this.setEditField(field,o)}; });
-    const efTextFields=['t','th','y','run','studio','dir','wr','dop','ed','mus','cast','imdb','imdbVotes','rt','rtCount','mc','metaCount','ow','on','aw','budM','wwM','domM','gb','buyDate','buyTime','price','dur','iturl','oid'];
+    const efTextFields=['t','th','y','run','studio','dir','wr','dop','ed','mus','cast','imdb','imdbVotes','rt','rtCount','mc','metaCount','ow','on','aw','budM','wwM','domM','gb','buyDate','buyTime','price','dur','iturl','oid','filmLen'];
     const efH={}; efTextFields.forEach(k=>{ efH[k]=(e)=>this.setEditField(k,e.target.value); });
     const efm = ef0 ? {
       g:mkMulti('g'), hdr:mkMulti('hdr'), audio:mkMulti('audio'), audioEng:mkMulti('audioEng'), subEng:mkMulti('subEng'), thai:mkMulti('thai'),
       aEng:mkMulti('aEng'), sEng:mkMulti('sEng'), aTh:mkMulti('aTh'), sTh:mkMulti('sTh'),
-      res:mkSingle('res',['FHD','4K']), di:mkSingle('di',['2K','4K','Spherical','DI','ไม่ระบุ']), color:mkSingle('color',['สี','ขาวดำ','สี + ขาวดำ']),
+      res:mkSingle('res',['FHD','4K']), di:mkSingle('di',['2K','4K','Spherical','DI','ไม่ระบุ']), color:mkSingle('color',this.COLOR_OPTIONS),
+      sourceBtns: this.SOURCE_OPTIONS.concat((ef0.source||[]).filter(s=>this.SOURCE_OPTIONS.indexOf(s)<0)).map(v=>({label:v, style:efChip((ef0.source||[]).includes(v)), toggle:()=>this.toggleEfArr('source',v)})),
       efShow4k: !!(ef0 && ef0.res==='4K'),
       wsLabel:{n:'ยังไม่ได้ดู',W:'✓ ดูแล้ว',w:'✓ ดูแล้ว · นานมากจำไม่ค่อยได้'}[ef0.ws||'n'],
       wsStyle:(ef0.ws==='W'?('height:36px;padding:0 14px;border-radius:9px;font-weight:600;font-size:12.5px;cursor:pointer;border:1px solid transparent;background:'+t.accent2+';color:#fff;'):ef0.ws==='w'?('height:36px;padding:0 14px;border-radius:9px;font-weight:600;font-size:12.5px;cursor:pointer;border:1px solid transparent;background:'+t.accent+';color:#fff;'):('height:36px;padding:0 14px;border-radius:9px;font-weight:600;font-size:12.5px;cursor:pointer;border:1px solid '+t.line+';background:'+t.bg+';color:'+t.muted+';')),
@@ -446,6 +447,14 @@ Object.assign(App.prototype, {
       manualDi:this.state.manualDi,
       manualDiBtns:['2K','4K','Spherical','DI','ไม่ระบุ'].map(d=>({label:d, set:()=>this.setState({manualDi:d}),
         style:'padding:5px 11px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid '+(this.state.manualDi===d?t.accent2:t.line)+';'+(this.state.manualDi===d?('background:'+t.accent2+';color:#fff;'):('background:'+t.bg+';color:'+t.ink+';'))})),
+      manualSourceBtns: this.SOURCE_OPTIONS.concat(this.state.manualSource.filter(s=>this.SOURCE_OPTIONS.indexOf(s)<0)).map(v=>({label:v, set:()=>this.toggleManualAudio('manualSource',v), style:this.audChip(this.state.manualSource.indexOf(v)>=0,t)})),
+      manualSourceInput:this.state.manualSourceInput,
+      onManualSourceInput:(e)=>this.setState({manualSourceInput:e.target.value}),
+      addManualSourceCustom:()=>this.addManualSourceCustom(),
+      onManualSourceKey:(e)=>{ if(e.key==='Enter'){ e.preventDefault(); this.addManualSourceCustom(); } },
+      manualColorBtns: this.COLOR_OPTIONS.map(c=>({label:c, set:()=>this.setState({manualColor:c}), style:this.audChip(this.state.manualColor===c,t)})),
+      manualFilmLen:this.state.manualFilmLen, onManualFilmLen:(e)=>{ const d=(e.target.value||'').replace(/[^0-9]/g,''); this.setState({manualFilmLen: d?(Number(d).toLocaleString('en-US')+' ม.'):''}); },
+      manualTime:this.state.manualTime, onManualTime:(e)=>this.setState({manualTime:e.target.value}),
       manualAEngBtns:['Atmos','7.1','5.1','2.0','AD'].map(v=>({label:this.AENG_LABELS[v]||v, set:()=>this.toggleManualAudio('manualAEng',v), style:this.audChip(this.state.manualAEng.indexOf(v)>=0,t)})),
       manualSEngBtns:this.FIELD_OPTIONS.sEng.map(v=>({label:v, set:()=>this.toggleManualAudio('manualSEng',v), style:this.audChip(this.state.manualSEng.indexOf(v)>=0,t)})),
       manualSubGroups:[
@@ -507,6 +516,9 @@ Object.assign(App.prototype, {
       efCustom,
       // comprehensive edit form
       efm, efH, efInput,
+      efSourceInput:this.state.efSourceInput, onEfSourceInput:(e)=>this.setState({efSourceInput:e.target.value}),
+      addEfSourceCustom:()=>this.addEfSourceCustom(), onEfSourceKey:(e)=>{ if(e.key==='Enter'){ e.preventDefault(); this.addEfSourceCustom(); } },
+      onEfFilmLen:(e)=>{ const d=(e.target.value||'').replace(/[^0-9]/g,''); this.setEditField('filmLen', d?(Number(d).toLocaleString('en-US')+' ม.'):''); },
       toggleEfWd:()=>this.toggleEfBool('wd'), toggleEfTh2:()=>this.toggleEfBool('th2'), toggleEfExtra:()=>this.toggleEfBool('hasExtra'),
       cycleEfWs:()=>this.setState(s=>({editForm:{...s.editForm, ws:{n:'W',W:'w',w:'n'}[s.editForm.ws||'n']}})),
       sum_gb:sumGb.toFixed(1)+' GB', sum_imdb:avgImdb.toFixed(1), sum_rt:avgRt+'%', avgDomLabel:'เฉลี่ย '+avgDomPct+'%',

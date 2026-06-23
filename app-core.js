@@ -1,6 +1,6 @@
 /* ===== เวอร์ชัน + วันที่เผยแพร่ (แก้ที่นี่ที่เดียวเวลาออกเวอร์ชันใหม่) ===== */
-const APP_VERSION = '0.9.5.0';
-const BUILD_DATE = '21 มิ.ย. 2569';
+const APP_VERSION = '0.9.6.0';
+const BUILD_DATE = '23 มิ.ย. 2569';
 
 class App extends React.Component {
   state = {
@@ -43,6 +43,12 @@ class App extends React.Component {
     manualUrl: '',
     manualOid: '',
     manualDi: '4K',
+    manualSource: [],
+    manualSourceInput: '',
+    efSourceInput: '',
+    manualColor: 'สี',
+    manualFilmLen: '',
+    manualTime: '',
     manualAEng: ['5.1','2.0'],
     manualSEng: ['Sub'],
     manualATh: [],
@@ -69,6 +75,8 @@ class App extends React.Component {
   ASPECT_OPTIONS = ['1.19:1','1.33:1','1.37:1','1.43:1','1.50:1','1.55:1','1.56:1','1.66:1','1.78:1','1.85:1','1.90:1','2.00:1','2.20:1','2.25:1','2.35:1','2.39:1','2.40:1','5.95:1','16:9','270° ScreenX'];
   AENG_LABELS = {'Atmos':'Dolby Atmos','7.1':'Dolby Digital 7.1','5.1':'Dolby Digital 5.1','2.0':'AAC 2.0','AD':'AD'};
   VERSION_OPTIONS = ['Theatrical','Extended','Director\'s Cut','Unrated','Special Edition','Ultimate Edition','Final Cut','Remastered'];
+  SOURCE_OPTIONS = ['1080p','2K','2.8K','3.2K','3.4K','4K','4.5K','5K','6K','6.5K','7K','8K'];
+  COLOR_OPTIONS = ['สี','ขาวดำ','สี+ขาวดำ'];
   IMGBASE = 'https://image.tmdb.org/t/p/w500';
 
   TONES = {
